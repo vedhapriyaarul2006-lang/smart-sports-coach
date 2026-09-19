@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Sports Coach</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef7ff, #f7f0ff);
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        /* NAVBAR */
+        nav {
+            width: 100%;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .logo span {
+            color: #7c3aed;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 11px 22px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .login-btn {
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            background: white;
+        }
+
+        .login-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .register-btn {
+            color: white;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        /* HERO */
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            padding: 60px 7%;
+        }
+
+        .hero-content {
+            width: 55%;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 9px 17px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
+        }
+
+        .hero p {
+            font-size: 19px;
+            line-height: 1.7;
+            color: #6b7280;
+            max-width: 650px;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn {
+            text-decoration: none;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .secondary-btn {
+            text-decoration: none;
+            padding: 15px 30px;
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .secondary-btn:hover {
+            background: #eff6ff;
+        }
+
+        /* HERO CARD */
+        .hero-visual {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .health-card {
+            width: 380px;
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        }
+
+        .health-card h3 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .score-circle {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .score-circle strong {
+            display: block;
+            font-size: 42px;
+        }
+
+        .score-circle small {
+            font-size: 13px;
+        }
+
+        .health-items {
+            display: grid;
+            gap: 12px;
+        }
+
+        .health-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px;
+            border-radius: 14px;
+            background: #f8fafc;
+        }
+
+        .health-item span:first-child {
+            font-weight: bold;
+        }
+
+        .good {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .normal {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        /* FEATURES */
+        .features {
+            padding: 70px 7%;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .feature-card {
+            padding: 28px;
+            border-radius: 22px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-icon {
+            width: 55px;
+            height: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: #dbeafe;
+            font-size: 27px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 70px 7%;
+            background: linear-gradient(135deg, #f8fbff, #faf7ff);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 25px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        /* CTA */
+        .cta {
+            margin: 60px 7%;
+            padding: 55px;
+            text-align: center;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            font-size: 17px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .cta a {
+            display: inline-block;
+            background: white;
+            color: #2563eb;
+            padding: 14px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 25px 7%;
+            background: #111827;
+            color: #d1d5db;
+            text-align: center;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1000px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content,
+            .hero-visual {
+                width: 100%;
+            }
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .feature-grid,
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            nav {
+                padding: 16px 5%;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .nav-buttons {
+                gap: 5px;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .hero {
+                padding: 45px 5%;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .health-card {
+                width: 100%;
+            }
+
+            .feature-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cta {
+                margin: 40px 5%;
+                padding: 35px 20px;
+            }
+
+            .cta h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">
+            Smart <span>Sports Coach</span>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="{{ url_for('login') }}" class="btn login-btn">
+                Login
+            </a>
+
+            <a href="{{ url_for('register') }}" class="btn register-btn">
+                Register
+            </a>
+        </div>
+    </nav>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                🏃 Smart Health & Fitness Platform
+            </div>
+
+            <h1>
+                Your Personal
+                <span>Smart Sports</span>
+                Coach
+            </h1>
+
+            <p>
+                Improve your health, fitness and lifestyle with personalized
+                sports recommendations, nutrition guidance, hydration tracking,
+                sleep insights and weekly fitness plans.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="{{ url_for('register') }}" class="primary-btn">
+                    Get Started →
+                </a>
+
+                <a href="{{ url_for('login') }}" class="secondary-btn">
+                    I Already Have an Account
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- HEALTH CARD -->
+        <div class="hero-visual">
+
+            <div class="health-card">
+
+                <h3>💚 Example Health Overview</h3>
+
+                <div class="score-circle">
+                    <div>
+                        <strong>85</strong>
+                        <small>Health Score</small>
+                    </div>
+                </div>
+
+                <div class="health-items">
+
+                    <div class="health-item">
+                        <span>🏃 Activity</span>
+                        <span class="good">Good</span>
+                    </div>
+
+                    <div class="health-item">
+                        <span>💧 Hydration</span>
+                        <span class="good">Good</span>
+                    </div>
+
+                    <div class="health-item">
+                        <span>😴 Sleep</span>
+                        <span class="normal">Normal</span>
+                    </div>
+
+                    <div class="health-item">
+                        <span>⚖️ BMI</span>
+                        <span class="normal">Healthy</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="features">
+
+        <div class="section-title">
+
+            <h2>Everything You Need for a Healthier Lifestyle</h2>
+
+            <p>
+                Smart Sports Coach analyzes your lifestyle and provides
+                personalized recommendations.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">📊</div>
+
+                <h3>Health Analysis</h3>
+
+                <p>
+                    Calculate your BMI, hydration requirement and overall
+                    health score based on your lifestyle information.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🏆</div>
+
+                <h3>Sports Recommendation</h3>
+
+                <p>
+                    Get sports and exercise recommendations based on your
+                    fitness goal, BMI and activity level.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">🥗</div>
+
+                <h3>Nutrition Guidance</h3>
+
+                <p>
+                    Receive personalized nutrition suggestions to support
+                    your fitness and health goals.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">💧</div>
+
+                <h3>Hydration Tracking</h3>
+
+                <p>
+                    Understand your daily water requirement and compare it
+                    with your current water intake.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+
+        <div class="section-title">
+
+            <h2>How Smart Sports Coach Works</h2>
+
+            <p>
+                Start your personalized health journey in four simple steps.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="step-number">1</div>
+
+                <h3>Create Account</h3>
+
+                <p>
+                    Register your account and securely access your dashboard.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">2</div>
+
+                <h3>Health Assessment</h3>
+
+                <p>
+                    Enter your age, height, weight, activity level, sleep
+                    and fitness goals.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">3</div>
+
+                <h3>Get Analysis</h3>
+
+                <p>
+                    The system calculates BMI, hydration needs and your
+                    overall health score.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">4</div>
+
+                <h3>Improve Your Health</h3>
+
+                <p>
+                    Follow personalized sports, nutrition and weekly fitness
+                    recommendations.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+    <section class="cta">
+
+        <h2>Ready to Start Your Fitness Journey?</h2>
+
+        <p>
+            Create your account and discover a smarter way to improve
+            your health and lifestyle.
+        </p>
+
+        <a href="{{ url_for('register') }}">
+            Start Your Journey 🚀
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            © 2026 <strong>Smart Sports Coach</strong>.
+            Built for a healthier lifestyle.
+        </p>
+
+    </footer>
+
+</body>
+</html>

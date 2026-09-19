@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Assessment | Smart Sports Coach</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e3a8a, #4c1d95);
+            color: white;
+            padding: 25px 18px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            padding: 10px 12px 30px;
+        }
+
+        .logo span {
+            color: #c4b5fd;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cbd5e1;
+            padding: 15px 12px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 20px;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 35px;
+        }
+
+        .welcome h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .welcome p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px 35px 50px;
+            max-width: 1100px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .page-heading p {
+            color: #6b7280;
+            margin-top: 7px;
+            line-height: 1.6;
+        }
+
+        /* PROGRESS */
+
+        .progress-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 20px 25px;
+            margin-bottom: 22px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 9px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+
+        /* FORM CARD */
+
+        .form-card {
+            background: white;
+            border-radius: 22px;
+            border: 1px solid #e5e7eb;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 22px;
+        }
+
+        .section-icon {
+            width: 42px;
+            height: 42px;
+            background: #dbeafe;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 19px;
+            color: #111827;
+        }
+
+        .section-title p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+
+        /* FORM GRID */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+            color: #1f2937;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .hint {
+            color: #9ca3af;
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        /* GOAL OPTIONS */
+
+        .goal-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .goal-option {
+            position: relative;
+        }
+
+        .goal-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .goal-label {
+            display: block;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+            background: #fff;
+        }
+
+        .goal-label:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .goal-option input:checked + .goal-label {
+            border-color: #2563eb;
+            background: #eff6ff;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+        }
+
+        .goal-emoji {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .goal-name {
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* BUTTONS */
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .cancel-btn {
+            padding: 13px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #374151;
+            background: #f3f4f6;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            border: none;
+            padding: 13px 28px;
+            border-radius: 12px;
+            color: white;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+        }
+
+        /* MOBILE */
+
+        .mobile-menu {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .goal-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .cancel-btn,
+            .submit-btn {
+                text-align: center;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            Smart <span>Sports Coach</span>
+        </div>
+
+        <div class="nav-title">
+            Main
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="nav-link">
+            <span class="nav-icon">🏠</span>
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('assessment') }}" class="nav-link active">
+            <span class="nav-icon">📋</span>
+            Health Assessment
+        </a>
+
+        <a href="{{ url_for('result') }}" class="nav-link">
+            <span class="nav-icon">📊</span>
+            My Analysis
+        </a>
+
+        <a href="{{ url_for('recommendations') }}" class="nav-link">
+            <span class="nav-icon">💡</span>
+            Recommendations
+        </a>
+
+        <a href="{{ url_for('weekly_plan') }}" class="nav-link">
+            <span class="nav-icon">📅</span>
+            Weekly Plan
+        </a>
+
+        <div class="nav-title">
+            Wellness
+        </div>
+
+        <a href="{{ url_for('nutrition') }}" class="nav-link">
+            <span class="nav-icon">🥗</span>
+            Nutrition
+        </a>
+
+        <a href="{{ url_for('hydration') }}" class="nav-link">
+            <span class="nav-icon">💧</span>
+            Hydration
+        </a>
+
+        <a href="{{ url_for('progress') }}" class="nav-link">
+            <span class="nav-icon">📈</span>
+            My Progress
+        </a>
+
+        <a href="{{ url_for('exercise_videos') }}" class="nav-link">
+            <span class="nav-icon">🎥</span>
+            Exercise Guide
+        </a>
+
+        <div class="nav-title">
+            Account
+        </div>
+
+        <a href="{{ url_for('settings') }}" class="nav-link">
+            <span class="nav-icon">⚙️</span>
+            Settings
+        </a>
+
+        <div class="logout">
+            <a href="{{ url_for('logout') }}" class="nav-link">
+                <span class="nav-icon">🚪</span>
+                Logout
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div style="display: flex; align-items: center; gap: 15px;">
+
+                <button
+                    type="button"
+                    class="mobile-menu"
+                    onclick="toggleSidebar()"
+                >
+                    ☰
+                </button>
+
+                <div class="welcome">
+                    <h2>Health Assessment</h2>
+
+                    <p>
+                        Tell us about your current lifestyle.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar">
+                    {{ user.name[0]|upper }}
+                </div>
+
+                <div class="profile-name">
+                    {{ user.name }}
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+            <div class="page-heading">
+
+                <h1>
+                    Complete Your Health Assessment 📋
+                </h1>
+
+                <p>
+                    Enter accurate information so Smart Sports Coach can
+                    calculate your health score and create personalized
+                    recommendations.
+                </p>
+
+            </div>
+
+            <!-- PROGRESS -->
+
+            <div class="progress-box">
+
+                <div class="progress-header">
+
+                    <span>
+                        Assessment Progress
+                    </span>
+
+                    <span id="progressText">
+                        0%
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+            <!-- FORM -->
+
+            <div class="form-card">
+
+                <form
+                    method="POST"
+                    action="{{ url_for('assessment') }}"
+                    id="assessmentForm"
+                >
+
+                    <!-- BASIC INFORMATION -->
+
+                    <div class="section">
+
+                        <div class="section-title">
+
+                            <div class="section-icon">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Basic Information
+                                </h2>
+
+                                <p>
+                                    Your basic physical information
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="age">
+                                    Age <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="age"
+                                    name="age"
+                                    min="10"
+                                    max="100"
+                                    placeholder="Enter your age"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="gender">
+                                    Gender <span class="required">*</span>
+                                </label>
+
+                                <select
+                                    id="gender"
+                                    name="gender"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select gender
+                                    </option>
+
+                                    <option value="Male">
+                                        Male
+                                    </option>
+
+                                    <option value="Female">
+                                        Female
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="height">
+                                    Height (cm)
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="height"
+                                    name="height"
+                                    min="100"
+                                    max="250"
+                                    step="0.1"
+                                    placeholder="Example: 170"
+                                    required
+                                >
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="weight">
+                                    Weight (kg)
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="weight"
+                                    name="weight"
+                                    min="25"
+                                    max="300"
+                                    step="0.1"
+                                    placeholder="Example: 65"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ACTIVITY AND FITNESS -->
+
+                    <div class="section">
+
+                        <div class="section-title">
+
+                            <div class="section-icon">
+                                🏃
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Activity & Fitness
+                                </h2>
+
+                                <p>
+                                    Tell us about your activity and goals
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="activity_level">
+                                    Activity Level
+                                    <span class="required">*</span>
+                                </label>
+
+                                <select
+                                    id="activity_level"
+                                    name="activity_level"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select activity level
+                                    </option>
+
+                                    <option value="Sedentary">
+                                        Sedentary — Little or no exercise
+                                    </option>
+
+                                    <option value="Light">
+                                        Light — 1 to 3 days/week
+                                    </option>
+
+                                    <option value="Moderate">
+                                        Moderate — 3 to 5 days/week
+                                    </option>
+
+                                    <option value="Active">
+                                        Active — 5 to 6 days/week
+                                    </option>
+
+                                    <option value="Very Active">
+                                        Very Active — Daily/intense exercise
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="sleep_duration">
+                                    Average Sleep (hours)
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="sleep_duration"
+                                    name="sleep_duration"
+                                    min="1"
+                                    max="16"
+                                    step="0.5"
+                                    placeholder="Example: 7.5"
+                                    required
+                                >
+
+                                <span class="hint">
+                                    Enter your average daily sleep duration.
+                                </span>
+
+                            </div>
+
+                            <div class="form-group full">
+
+                                <label>
+                                    Fitness Goal
+                                    <span class="required">*</span>
+                                </label>
+
+                                <div class="goal-options">
+
+                                    <div class="goal-option">
+
+                                        <input
+                                            type="radio"
+                                            id="weight_loss"
+                                            name="fitness_goal"
+                                            value="Weight Loss"
+                                            required
+                                        >
+
+                                        <label
+                                            for="weight_loss"
+                                            class="goal-label"
+                                        >
+                                            <span class="goal-emoji">
+                                                🔥
+                                            </span>
+
+                                            <span class="goal-name">
+                                                Weight Loss
+                                            </span>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="goal-option">
+
+                                        <input
+                                            type="radio"
+                                            id="muscle_gain"
+                                            name="fitness_goal"
+                                            value="Muscle Gain"
+                                        >
+
+                                        <label
+                                            for="muscle_gain"
+                                            class="goal-label"
+                                        >
+                                            <span class="goal-emoji">
+                                                💪
+                                            </span>
+
+                                            <span class="goal-name">
+                                                Muscle Gain
+                                            </span>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="goal-option">
+
+                                        <input
+                                            type="radio"
+                                            id="fitness"
+                                            name="fitness_goal"
+                                            value="General Fitness"
+                                        >
+
+                                        <label
+                                            for="fitness"
+                                            class="goal-label"
+                                        >
+                                            <span class="goal-emoji">
+                                                🏆
+                                            </span>
+
+                                            <span class="goal-name">
+                                                General Fitness
+                                            </span>
+                                        </label>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- HYDRATION -->
+
+                    <div class="section">
+
+                        <div class="section-title">
+
+                            <div class="section-icon">
+                                💧
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Hydration
+                                </h2>
+
+                                <p>
+                                    Help us understand your daily water intake
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="water_intake">
+                                    Daily Water Intake (litres)
+                                    <span class="required">*</span>
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="water_intake"
+                                    name="water_intake"
+                                    min="0"
+                                    max="15"
+                                    step="0.1"
+                                    placeholder="Example: 2.5"
+                                    required
+                                >
+
+                                <span class="hint">
+                                    Approximate amount of water you drink per day.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ADDITIONAL INFORMATION -->
+
+                    <div class="section">
+
+                        <div class="section-title">
+
+                            <div class="section-icon">
+                                📝
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Additional Information
+                                </h2>
+
+                                <p>
+                                    Optional information for better recommendations
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+
+                                <label for="eating_habits">
+                                    Eating Habits
+                                </label>
+
+                                <select
+                                    id="eating_habits"
+                                    name="eating_habits"
+                                >
+
+                                    <option value="">
+                                        Select eating pattern
+                                    </option>
+
+                                    <option value="Balanced">
+                                        Balanced Diet
+                                    </option>
+
+                                    <option value="Vegetarian">
+                                        Vegetarian
+                                    </option>
+
+                                    <option value="Vegan">
+                                        Vegan
+                                    </option>
+
+                                    <option value="High Protein">
+                                        High Protein
+                                    </option>
+
+                                    <option value="Irregular">
+                                        Irregular Meals
+                                    </option>
+
+                                    <option value="Fast Food">
+                                        Frequent Fast Food
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- CORRECTED NAME -->
+
+                            <div class="form-group">
+
+                                <label for="preferred_environment">
+                                    Preferred Sports Environment
+                                </label>
+
+                                <select
+                                    id="preferred_environment"
+                                    name="preferred_environment"
+                                >
+
+                                    <option value="">
+                                        Select environment
+                                    </option>
+
+                                    <option value="Indoor">
+                                        Indoor
+                                    </option>
+
+                                    <option value="Outdoor">
+                                        Outdoor
+                                    </option>
+
+                                    <option value="Both">
+                                        Both Indoor & Outdoor
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <!-- CORRECTED NAME -->
+
+                            <div class="form-group">
+
+                                <label for="exercise_time">
+                                    Available Exercise Time
+                                </label>
+
+                                <select
+                                    id="exercise_time"
+                                    name="exercise_time"
+                                >
+
+                                    <option value="">
+                                        Select duration
+                                    </option>
+
+                                    <option value="15-30 minutes">
+                                        15–30 minutes
+                                    </option>
+
+                                    <option value="30-60 minutes">
+                                        30–60 minutes
+                                    </option>
+
+                                    <option value="60-90 minutes">
+                                        60–90 minutes
+                                    </option>
+
+                                    <option value="90+ minutes">
+                                        More than 90 minutes
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <label for="medical_conditions">
+                                    Medical Conditions
+                                </label>
+
+                                <textarea
+                                    id="medical_conditions"
+                                    name="medical_conditions"
+                                    placeholder="Mention any relevant medical conditions or write 'None'."
+                                ></textarea>
+
+                                <span class="hint">
+                                    This information is used only to make recommendations more appropriate.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- ACTION BUTTONS -->
+
+                    <div class="form-actions">
+
+                        <a
+                            href="{{ url_for('dashboard') }}"
+                            class="cancel-btn"
+                        >
+                            Cancel
+                        </a>
+
+                        <button
+                            type="submit"
+                            class="submit-btn"
+                        >
+                            Analyze My Health →
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("show");
+        }
+
+        const form = document.getElementById("assessmentForm");
+
+        const inputs = form.querySelectorAll(
+            "input, select, textarea"
+        );
+
+        const progressFill =
+            document.getElementById("progressFill");
+
+        const progressText =
+            document.getElementById("progressText");
+
+        function updateProgress() {
+
+            let completed = 0;
+            let total = 0;
+
+            const checkedRadioGroups = new Set();
+
+            inputs.forEach(function(input) {
+
+                if (input.type === "radio") {
+
+                    if (!checkedRadioGroups.has(input.name)) {
+
+                        checkedRadioGroups.add(input.name);
+
+                        const group = form.querySelectorAll(
+                            'input[name="' + input.name + '"]'
+                        );
+
+                        total++;
+
+                        let checked = false;
+
+                        group.forEach(function(radio) {
+
+                            if (radio.checked) {
+                                checked = true;
+                            }
+
+                        });
+
+                        if (checked) {
+                            completed++;
+                        }
+
+                    }
+
+                } else {
+
+                    total++;
+
+                    if (input.value.trim() !== "") {
+                        completed++;
+                    }
+
+                }
+
+            });
+
+            const percentage =
+                total > 0
+                    ? Math.round((completed / total) * 100)
+                    : 0;
+
+            progressFill.style.width =
+                percentage + "%";
+
+            progressText.textContent =
+                percentage + "%";
+        }
+
+        inputs.forEach(function(input) {
+
+            input.addEventListener(
+                "input",
+                updateProgress
+            );
+
+            input.addEventListener(
+                "change",
+                updateProgress
+            );
+
+        });
+
+        form.addEventListener("submit", function(event) {
+
+            const age = parseInt(
+                document.getElementById("age").value
+            );
+
+            const height = parseFloat(
+                document.getElementById("height").value
+            );
+
+            const weight = parseFloat(
+                document.getElementById("weight").value
+            );
+
+            const sleep = parseFloat(
+                document.getElementById("sleep_duration").value
+            );
+
+            const water = parseFloat(
+                document.getElementById("water_intake").value
+            );
+
+            if (
+                isNaN(age) ||
+                age < 10 ||
+                age > 100
+            ) {
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid age between 10 and 100."
+                );
+
+                return;
+            }
+
+            if (
+                isNaN(height) ||
+                height < 100 ||
+                height > 250
+            ) {
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid height between 100 and 250 cm."
+                );
+
+                return;
+            }
+
+            if (
+                isNaN(weight) ||
+                weight < 25 ||
+                weight > 300
+            ) {
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid weight between 25 and 300 kg."
+                );
+
+                return;
+            }
+
+            if (
+                isNaN(sleep) ||
+                sleep < 1 ||
+                sleep > 16
+            ) {
+                event.preventDefault();
+
+                alert(
+                    "Please enter a valid sleep duration between 1 and 16 hours."
+                );
+
+                return;
+            }
+
+            if (
+                isNaN(water) ||
+                water < 0 ||
+                water > 15
+            ) {
+                event.preventDefault();
+
+                alert(
+                    "Please enter valid daily water intake between 0 and 15 litres."
+                );
+
+                return;
+            }
+
+        });
+
+        updateProgress();
+
+    </script>
+
+</body>
+
+</html>

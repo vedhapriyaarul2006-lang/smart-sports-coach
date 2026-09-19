@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recommendations | Smart Sports Coach</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e3a8a, #4c1d95);
+            color: white;
+            padding: 25px 18px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            padding: 10px 12px 30px;
+        }
+
+        .logo span {
+            color: #c4b5fd;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cbd5e1;
+            padding: 15px 12px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 20px;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 35px;
+        }
+
+        .welcome h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .welcome p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px 35px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .page-heading p {
+            color: #6b7280;
+            margin-top: 7px;
+        }
+
+        /* HEALTH BANNER */
+
+        .health-banner {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.18);
+        }
+
+        .health-banner h2 {
+            font-size: 23px;
+            margin-bottom: 8px;
+        }
+
+        .health-banner p {
+            line-height: 1.6;
+            font-size: 14px;
+            max-width: 850px;
+            opacity: 0.92;
+        }
+
+        .status-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.18);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* PROFILE SUMMARY */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 17px;
+            padding: 20px;
+        }
+
+        .summary-card .icon {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .summary-card span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .summary-card strong {
+            font-size: 17px;
+            color: #111827;
+        }
+
+        /* SECTION */
+
+        .section-title {
+            margin: 30px 0 17px;
+        }
+
+        .section-title h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .section-title p {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        /* RECOMMENDATIONS */
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .recommendation-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 23px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+        }
+
+        .recommendation-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #2563eb, #7c3aed);
+        }
+
+        .recommendation-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .recommendation-card:nth-child(2) .recommendation-icon {
+            background: #ede9fe;
+        }
+
+        .recommendation-card:nth-child(3) .recommendation-icon {
+            background: #dcfce7;
+        }
+
+        .recommendation-card:nth-child(4) .recommendation-icon {
+            background: #fef3c7;
+        }
+
+        .recommendation-card:nth-child(5) .recommendation-icon {
+            background: #cffafe;
+        }
+
+        .recommendation-card:nth-child(6) .recommendation-icon {
+            background: #fce7f3;
+        }
+
+        .recommendation-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .category {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 10px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .recommendation-reason {
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: 13px;
+        }
+
+        /* PRIORITY ACTIONS */
+
+        .priority-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .priority-panel h3 {
+            font-size: 19px;
+            margin-bottom: 18px;
+        }
+
+        .priority-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .priority-item {
+            background: #f8fafc;
+            border-radius: 13px;
+            padding: 17px;
+        }
+
+        .priority-number {
+            width: 30px;
+            height: 30px;
+            background: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .priority-item p {
+            font-size: 13px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        /* SPORTS */
+
+        .sports-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 25px;
+            margin-top: 25px;
+        }
+
+        .sports-panel h3 {
+            font-size: 19px;
+            margin-bottom: 18px;
+        }
+
+        .sports-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .sport-tag {
+            padding: 11px 16px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #374151;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* BUTTONS */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 13px 21px;
+            border-radius: 11px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+
+        .secondary {
+            background: white;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* MOBILE */
+
+        .mobile-menu {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1100px) {
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .priority-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 850px) {
+
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Smart <span>Sports Coach</span>
+    </div>
+
+    <div class="nav-title">
+        Main
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="nav-link">
+        <span class="nav-icon">🏠</span>
+        Dashboard
+    </a>
+
+    <a href="{{ url_for('assessment') }}" class="nav-link">
+        <span class="nav-icon">📋</span>
+        Health Assessment
+    </a>
+
+    <a href="{{ url_for('result') }}" class="nav-link">
+        <span class="nav-icon">📊</span>
+        My Analysis
+    </a>
+
+    <a href="{{ url_for('recommendations') }}" class="nav-link active">
+        <span class="nav-icon">💡</span>
+        Recommendations
+    </a>
+
+    <a href="{{ url_for('weekly_plan') }}" class="nav-link">
+        <span class="nav-icon">📅</span>
+        Weekly Plan
+    </a>
+
+    <div class="nav-title">
+        Wellness
+    </div>
+
+    <a href="{{ url_for('nutrition') }}" class="nav-link">
+        <span class="nav-icon">🥗</span>
+        Nutrition
+    </a>
+
+    <a href="{{ url_for('hydration') }}" class="nav-link">
+        <span class="nav-icon">💧</span>
+        Hydration
+    </a>
+
+    <a href="{{ url_for('progress') }}" class="nav-link">
+        <span class="nav-icon">📈</span>
+        My Progress
+    </a>
+
+    <a href="{{ url_for('exercise_videos') }}" class="nav-link">
+        <span class="nav-icon">🎥</span>
+        Exercise Guide
+    </a>
+
+    <div class="nav-title">
+        Account
+    </div>
+
+    <a href="{{ url_for('settings') }}" class="nav-link">
+        <span class="nav-icon">⚙️</span>
+        Settings
+    </a>
+
+    <div class="logout">
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            <span class="nav-icon">🚪</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div style="display:flex;align-items:center;gap:15px;">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <div class="welcome">
+
+                <h2>
+                    Personalized Recommendations
+                </h2>
+
+                <p>
+                    Suggestions based on your health assessment.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ user.name[0]|upper }}
+            </div>
+
+            <div class="profile-name">
+                {{ user.name }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+        {% if assessment %}
+
+        <!-- HEADING -->
+
+        <div class="page-heading">
+
+            <h1>
+                Your Personalized Recommendations 💡
+            </h1>
+
+            <p>
+                Smart suggestions designed around your current
+                health profile and fitness goal.
+            </p>
+
+        </div>
+
+
+        <!-- HEALTH BANNER -->
+
+        <div class="health-banner">
+
+            <h2>
+                Your Health Status: {{ health_status }}
+            </h2>
+
+            <p>
+                {{ health_message }}
+            </p>
+
+            {% if progress_status %}
+
+            <div class="status-badge">
+                Progress: {{ progress_status }}
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- PROFILE SUMMARY -->
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+
+                <div class="icon">
+                    ⚖️
+                </div>
+
+                <span>
+                    BMI
+                </span>
+
+                <strong>
+                    {{ assessment.bmi|round(1) }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="icon">
+                    🎯
+                </div>
+
+                <span>
+                    Fitness Goal
+                </span>
+
+                <strong>
+                    {{ assessment.fitness_goal }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="icon">
+                    🏃
+                </div>
+
+                <span>
+                    Activity Level
+                </span>
+
+                <strong>
+                    {{ assessment.activity_level }}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="icon">
+                    ❤️
+                </div>
+
+                <span>
+                    Health Score
+                </span>
+
+                <strong>
+                    {{ assessment.health_score|round|int }}/100
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECOMMENDATIONS -->
+
+        <div class="section-title">
+
+            <h2>
+                Recommended Actions
+            </h2>
+
+            <p>
+                Follow these suggestions consistently to improve
+                your overall wellness.
+            </p>
+
+        </div>
+
+
+        {% if recommendations_list %}
+
+        <div class="recommendations-grid">
+
+            {% for recommendation in recommendations_list %}
+
+            <div class="recommendation-card">
+
+                <div class="recommendation-header">
+
+                    <div class="recommendation-icon">
+                        {{ recommendation.icon }}
+                    </div>
+
+                    <div>
+
+                        <div class="recommendation-title">
+                            {{ recommendation.title }}
+                        </div>
+
+                        <div class="category">
+                            {{ recommendation.category }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {% if recommendation.priority %}
+
+                <div class="priority">
+                    {{ recommendation.priority }}
+                </div>
+
+                {% endif %}
+
+
+                <p class="recommendation-reason">
+
+                    {{ recommendation.reason }}
+
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="priority-panel">
+
+            <h3>
+                No recommendations available
+            </h3>
+
+            <p style="color:#6b7280;font-size:14px;">
+                Complete your health assessment again to generate
+                personalized recommendations.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- PRIORITY ACTIONS -->
+
+        {% if priority_actions %}
+
+        <div class="priority-panel">
+
+            <h3>
+                ⭐ Your Priority Actions
+            </h3>
+
+            <div class="priority-list">
+
+                {% for action in priority_actions %}
+
+                <div class="priority-item">
+
+                    <div class="priority-number">
+                        {{ loop.index }}
+                    </div>
+
+                    <p>
+                        {{ action }}
+                    </p>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- SPORTS -->
+
+        {% if sports %}
+
+        <div class="sports-panel">
+
+            <h3>
+                🏅 Sports You Can Consider
+            </h3>
+
+            <div class="sports-list">
+
+                {% for sport in sports %}
+
+                <div class="sport-tag">
+                    ⚡ {{ sport }}
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- PROGRESS -->
+
+        {% if progress_message %}
+
+        <div class="priority-panel">
+
+            <h3>
+                📈 Progress Insight
+            </h3>
+
+            <p style="color:#6b7280;line-height:1.6;font-size:14px;">
+                {{ progress_message }}
+            </p>
+
+            {% if progress_change is not none %}
+
+            <div style="
+                margin-top:15px;
+                padding:13px;
+                border-radius:10px;
+                background:#f8fafc;
+                font-size:13px;
+                font-weight:bold;
+            ">
+
+                Health Score Change:
+                {{ progress_change|round(1) }}
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('weekly_plan') }}"
+                class="action-btn primary"
+            >
+                📅 View My Weekly Plan
+            </a>
+
+            <a
+                href="{{ url_for('exercise_videos') }}"
+                class="action-btn primary"
+            >
+                🎥 Exercise Guide
+            </a>
+
+            <a
+                href="{{ url_for('nutrition') }}"
+                class="action-btn secondary"
+            >
+                🥗 Nutrition
+            </a>
+
+            <a
+                href="{{ url_for('hydration') }}"
+                class="action-btn secondary"
+            >
+                💧 Hydration
+            </a>
+
+        </div>
+
+
+        {% else %}
+
+        <!-- NO ASSESSMENT -->
+
+        <div class="priority-panel" style="text-align:center;padding:60px 30px;">
+
+            <div style="font-size:60px;margin-bottom:20px;">
+                📋
+            </div>
+
+            <h2 style="margin-bottom:12px;">
+                Complete Your Health Assessment
+            </h2>
+
+            <p style="color:#6b7280;margin-bottom:25px;">
+                We need your health information before we can
+                generate personalized recommendations.
+            </p>
+
+            <a
+                href="{{ url_for('assessment') }}"
+                class="action-btn primary"
+            >
+                Start Assessment →
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+
+<script>
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("show");
+
+    }
+
+</script>
+
+</body>
+</html>

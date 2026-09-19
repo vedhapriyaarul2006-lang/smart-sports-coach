@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Exercise Guide | Smart Sports Coach</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: linear-gradient(
+                180deg,
+                #be123c,
+                #881337
+            );
+
+            color: white;
+
+            padding: 25px 18px;
+
+            overflow-y: auto;
+
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+
+            padding: 10px 12px 30px;
+        }
+
+        .logo span {
+            color: #fecdd3;
+        }
+
+        .nav-title {
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            color: #fecdd3;
+
+            padding: 15px 12px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 12px;
+
+            margin-bottom: 5px;
+
+            border-radius: 10px;
+
+            color: #ffe4e6;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,0.16);
+
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+
+            text-align: center;
+
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 20px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            padding-top: 20px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+
+            min-height: 100vh;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+
+            background: white;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 0 35px;
+        }
+
+        .welcome h2 {
+            font-size: 21px;
+
+            color: #111827;
+        }
+
+        .welcome p {
+            font-size: 13px;
+
+            color: #6b7280;
+
+            margin-top: 4px;
+        }
+
+        .profile {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e11d48,
+                    #9f1239
+                );
+
+            color: white;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-weight: bold;
+        }
+
+        .profile-name {
+            font-size: 14px;
+
+            font-weight: bold;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px 35px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+
+            color: #111827;
+        }
+
+        .page-heading p {
+            color: #6b7280;
+
+            margin-top: 7px;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            background:
+                linear-gradient(
+                    135deg,
+                    #e11d48,
+                    #be123c
+                );
+
+            color: white;
+
+            border-radius: 22px;
+
+            padding: 30px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(190,18,60,0.18);
+        }
+
+        .hero h2 {
+            font-size: 24px;
+
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            max-width: 850px;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            opacity: 0.93;
+        }
+
+        .hero-badges {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 18px;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.18);
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        /* ================= INFO ================= */
+
+        .info-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 17px;
+
+            margin-bottom: 28px;
+        }
+
+        .info-card {
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 17px;
+
+            padding: 21px;
+        }
+
+        .info-icon {
+            font-size: 25px;
+
+            margin-bottom: 9px;
+        }
+
+        .info-label {
+            color: #6b7280;
+
+            font-size: 12px;
+
+            margin-bottom: 6px;
+        }
+
+        .info-value {
+            color: #111827;
+
+            font-size: 18px;
+
+            font-weight: bold;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section-title {
+            margin: 30px 0 17px;
+        }
+
+        .section-title h2 {
+            font-size: 21px;
+
+            color: #111827;
+        }
+
+        .section-title p {
+            color: #6b7280;
+
+            font-size: 13px;
+
+            margin-top: 5px;
+        }
+
+        /* ================= EXERCISE GRID ================= */
+
+        .exercise-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+        .exercise-card {
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 19px;
+
+            overflow: hidden;
+
+            transition: 0.3s;
+        }
+
+        .exercise-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 14px 30px
+                rgba(0,0,0,0.08);
+        }
+
+        .exercise-top {
+            padding: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff1f2,
+                    #ffe4e6
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+        .exercise-icon {
+            width: 58px;
+            height: 58px;
+
+            border-radius: 15px;
+
+            background: white;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 30px;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0,0,0,0.06);
+        }
+
+        .exercise-top h3 {
+            font-size: 18px;
+
+            color: #111827;
+
+            margin-bottom: 5px;
+        }
+
+        .exercise-category {
+            font-size: 11px;
+
+            color: #be123c;
+
+            font-weight: bold;
+        }
+
+        .exercise-body {
+            padding: 22px;
+        }
+
+        .exercise-description {
+            color: #6b7280;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+        .exercise-details {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 18px;
+        }
+
+        .detail {
+            background: #f9fafb;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 8px;
+
+            padding: 7px 10px;
+
+            font-size: 11px;
+
+            color: #4b5563;
+        }
+
+        .video-btn {
+            display: block;
+
+            width: 100%;
+
+            text-align: center;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e11d48,
+                    #be123c
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .video-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ================= SAFETY ================= */
+
+        .safety-card {
+            margin-top: 25px;
+
+            background: #fff7ed;
+
+            border:
+                1px solid #fed7aa;
+
+            border-radius: 18px;
+
+            padding: 23px;
+        }
+
+        .safety-card h3 {
+            color: #c2410c;
+
+            font-size: 17px;
+
+            margin-bottom: 9px;
+        }
+
+        .safety-card p {
+            color: #7c2d12;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        /* ================= ACTIONS ================= */
+
+        .actions {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 13px 21px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    #e11d48,
+                    #be123c
+                );
+
+            color: white;
+        }
+
+        .secondary {
+            background: white;
+
+            border:
+                1px solid #d1d5db;
+
+            color: #374151;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ================= MOBILE ================= */
+
+        .mobile-menu {
+            display: none;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 1000px) {
+
+            .info-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+
+                transition: 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Smart <span>Sports Coach</span>
+    </div>
+
+
+    <div class="nav-title">
+        Main
+    </div>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🏠</span>
+        Dashboard
+    </a>
+
+
+    <a
+        href="{{ url_for('assessment') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📋</span>
+        Health Assessment
+    </a>
+
+
+    <a
+        href="{{ url_for('result') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📊</span>
+        My Analysis
+    </a>
+
+
+    <a
+        href="{{ url_for('recommendations') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">💡</span>
+        Recommendations
+    </a>
+
+
+    <a
+        href="{{ url_for('weekly_plan') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📅</span>
+        Weekly Plan
+    </a>
+
+
+    <div class="nav-title">
+        Wellness
+    </div>
+
+
+    <a
+        href="{{ url_for('nutrition') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🥗</span>
+        Nutrition
+    </a>
+
+
+    <a
+        href="{{ url_for('hydration') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">💧</span>
+        Hydration
+    </a>
+
+
+    <a
+        href="{{ url_for('progress') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📈</span>
+        My Progress
+    </a>
+
+
+    <a
+        href="{{ url_for('exercise_videos') }}"
+        class="nav-link active"
+    >
+        <span class="nav-icon">🎥</span>
+        Exercise Guide
+    </a>
+
+
+    <div class="nav-title">
+        Account
+    </div>
+
+
+    <a
+        href="{{ url_for('settings') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">⚙️</span>
+        Settings
+    </a>
+
+
+    <div class="logout">
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="nav-link"
+        >
+            <span class="nav-icon">🚪</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                gap:15px;
+            "
+        >
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+
+            <div class="welcome">
+
+                <h2>
+                    Exercise Guide
+                </h2>
+
+                <p>
+                    Explore exercises that match your current profile.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ user.name[0]|upper }}
+            </div>
+
+            <div class="profile-name">
+                {{ user.name }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <div class="content">
+
+
+        <!-- HEADING -->
+
+        <div class="page-heading">
+
+            <h1>
+                Exercise & Sports Guide 🎥
+            </h1>
+
+            <p>
+                Discover exercises and sports activities to support
+                your fitness journey.
+            </p>
+
+        </div>
+
+
+
+        <!-- HERO -->
+
+        <div class="hero">
+
+            <h2>
+                Your Personalized Exercise Guide 🏃
+            </h2>
+
+            <p>
+                Choose activities that are comfortable for your
+                current fitness level. Start gradually and increase
+                intensity as your fitness improves.
+            </p>
+
+
+            <div class="hero-badges">
+
+                <span class="badge">
+                    🎯 Goal: {{ fitness_goal }}
+                </span>
+
+                <span class="badge">
+                    ⚖️ BMI: {{ bmi|round(1) }}
+                </span>
+
+                <span class="badge">
+                    🏃 Activity: {{ activity_level }}
+                </span>
+
+                <span class="badge">
+                    📈 Level: {{ recommended_level }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PROFILE SUMMARY -->
+
+        <div class="info-grid">
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    🎯
+                </div>
+
+                <div class="info-label">
+                    Fitness Goal
+                </div>
+
+                <div class="info-value">
+                    {{ fitness_goal }}
+                </div>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    🏃
+                </div>
+
+                <div class="info-label">
+                    Current Activity
+                </div>
+
+                <div class="info-value">
+                    {{ activity_level }}
+                </div>
+
+            </div>
+
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+                    📊
+                </div>
+
+                <div class="info-label">
+                    Recommended Level
+                </div>
+
+                <div class="info-value">
+                    {{ recommended_level }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- EXERCISES -->
+
+        <div class="section-title">
+
+            <h2>
+                🔥 Recommended Exercises
+            </h2>
+
+            <p>
+                Select an exercise below to explore a guided video.
+            </p>
+
+        </div>
+
+
+        <div class="exercise-grid">
+
+
+            {% if exercises %}
+
+
+                {% for exercise in exercises %}
+
+
+                <div class="exercise-card">
+
+
+                    <div class="exercise-top">
+
+                        <div class="exercise-icon">
+
+                            {% if exercise.icon %}
+                                {{ exercise.icon }}
+                            {% else %}
+                                🏃
+                            {% endif %}
+
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                {{ exercise.name }}
+                            </h3>
+
+                            <div class="exercise-category">
+
+                                {% if exercise.category %}
+                                    {{ exercise.category }}
+                                {% else %}
+                                    Exercise
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="exercise-body">
+
+
+                        <p class="exercise-description">
+
+                            {% if exercise.description %}
+
+                                {{ exercise.description }}
+
+                            {% else %}
+
+                                A suitable exercise to support
+                                your fitness journey.
+
+                            {% endif %}
+
+                        </p>
+
+
+
+                        <div class="exercise-details">
+
+
+                            <span class="detail">
+
+                                ⏱️
+
+                                {% if exercise.duration %}
+                                    {{ exercise.duration }}
+                                {% else %}
+                                    15–30 min
+                                {% endif %}
+
+                            </span>
+
+
+                            <span class="detail">
+
+                                📈
+
+                                {% if exercise.level %}
+                                    {{ exercise.level }}
+                                {% else %}
+                                    {{ recommended_level }}
+                                {% endif %}
+
+                            </span>
+
+
+                            <span class="detail">
+                                🎯 Goal Based
+                            </span>
+
+
+                        </div>
+
+
+
+                        {% if exercise.video %}
+
+                        <a
+                            href="{{ exercise.video }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="video-btn"
+                        >
+                            ▶ Watch Exercise Video
+                        </a>
+
+                        {% else %}
+
+                        <a
+                            href="https://www.youtube.com/results?search_query={{ exercise.name|urlencode }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="video-btn"
+                        >
+                            ▶ Find Exercise Video
+                        </a>
+
+                        {% endif %}
+
+
+                    </div>
+
+                </div>
+
+
+                {% endfor %}
+
+
+            {% else %}
+
+
+                <div
+                    style="
+                        grid-column:1/-1;
+                        background:white;
+                        border:1px solid #e5e7eb;
+                        border-radius:18px;
+                        padding:45px;
+                        text-align:center;
+                    "
+                >
+
+                    <div
+                        style="
+                            font-size:50px;
+                            margin-bottom:15px;
+                        "
+                    >
+                        🏃
+                    </div>
+
+                    <h3 style="margin-bottom:8px;">
+                        No Exercise Recommendations Yet
+                    </h3>
+
+                    <p
+                        style="
+                            color:#6b7280;
+                            font-size:13px;
+                        "
+                    >
+                        Complete your health assessment to receive
+                        exercise recommendations.
+                    </p>
+
+                </div>
+
+
+            {% endif %}
+
+
+        </div>
+
+
+
+        <!-- SAFETY -->
+
+        <div class="safety-card">
+
+            <h3>
+                ⚠️ Exercise Safety
+            </h3>
+
+            <p>
+                Start at a comfortable intensity and increase
+                gradually. Stop if you experience pain, dizziness,
+                unusual shortness of breath or feel unwell.
+                If you have a medical condition or concerns about
+                exercising, seek appropriate professional guidance
+                before starting a new exercise routine.
+            </p>
+
+        </div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('weekly_plan') }}"
+                class="action-btn primary"
+            >
+                📅 View Weekly Plan
+            </a>
+
+
+            <a
+                href="{{ url_for('recommendations') }}"
+                class="action-btn secondary"
+            >
+                💡 Recommendations
+            </a>
+
+
+            <a
+                href="{{ url_for('progress') }}"
+                class="action-btn secondary"
+            >
+                📈 My Progress
+            </a>
+
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="action-btn secondary"
+            >
+                🏠 Dashboard
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("show");
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

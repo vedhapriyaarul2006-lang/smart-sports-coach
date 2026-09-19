@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Smart Sports Coach</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 255px;
+            height: 100vh;
+            padding: 25px 18px;
+            background: linear-gradient(180deg, #172554, #312e81, #581c87);
+            color: white;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: 0.3s ease;
+        }
+
+        .logo {
+            padding: 10px 12px 30px;
+            font-size: 23px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #c4b5fd;
+        }
+
+        .nav-title {
+            margin: 18px 12px 10px;
+            color: #cbd5e1;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            margin-bottom: 6px;
+            border-radius: 13px;
+            color: #e0e7ff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.25s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.17);
+            color: white;
+            transform: translateX(3px);
+        }
+
+        .nav-icon {
+            width: 25px;
+            text-align: center;
+            font-size: 19px;
+        }
+
+        .logout {
+            margin-top: 25px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* MAIN */
+
+        .main {
+            min-height: 100vh;
+            margin-left: 255px;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            min-height: 82px;
+            padding: 18px 38px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .welcome h2 {
+            color: #111827;
+            font-size: 22px;
+        }
+
+        .welcome p {
+            margin-top: 5px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #9333ea);
+            color: white;
+            font-size: 19px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .profile-name {
+            color: #111827;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .mobile-menu {
+            display: none;
+            border: none;
+            background: transparent;
+            color: #1e293b;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 35px 38px;
+        }
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+        .page-heading h1 {
+            color: #111827;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .page-heading p {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* STAT CARDS */
+
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .score-card {
+            position: relative;
+            overflow: hidden;
+            padding: 24px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+            transition: 0.25s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .score-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #2563eb, #60a5fa);
+        }
+
+        .score-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #7c3aed, #c084fc);
+        }
+
+        .score-card:nth-child(3)::before {
+            background: linear-gradient(90deg, #0891b2, #67e8f9);
+        }
+
+        .score-card:nth-child(4)::before {
+            background: linear-gradient(90deg, #16a34a, #86efac);
+        }
+
+        .card-label {
+            margin-bottom: 13px;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .card-value {
+            color: #111827;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .card-unit {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .change {
+            margin-top: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .positive {
+            color: #16a34a;
+        }
+
+        .negative {
+            color: #dc2626;
+        }
+
+        .neutral {
+            color: #64748b;
+        }
+
+        /* LOWER GRID */
+
+        .lower-grid {
+            display: grid;
+            grid-template-columns: 1.45fr 1fr;
+            gap: 24px;
+        }
+
+        .panel {
+            padding: 26px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .panel-header h3 {
+            color: #111827;
+            font-size: 19px;
+        }
+
+        .panel-header a {
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .panel-header a:hover {
+            text-decoration: underline;
+        }
+
+        /* HEALTH STATUS */
+
+        .health-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 22px;
+            padding: 22px;
+            border-radius: 17px;
+            background: linear-gradient(
+                135deg,
+                #eff6ff,
+                #f5f3ff
+            );
+        }
+
+        .status-circle {
+            width: 92px;
+            height: 92px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            font-size: 27px;
+            font-weight: 800;
+            box-shadow: 0 8px 22px rgba(79, 70, 229, 0.3);
+        }
+
+        .status-text h4 {
+            margin-bottom: 8px;
+            color: #111827;
+            font-size: 18px;
+        }
+
+        .status-text p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* DETAILS */
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 13px;
+        }
+
+        .detail {
+            padding: 17px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #eef2f7;
+        }
+
+        .detail-label {
+            margin-bottom: 7px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .detail-value {
+            color: #111827;
+            font-size: 14px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        /* DAILY FOCUS */
+
+        .focus-card {
+            margin-top: 24px;
+        }
+
+        .focus-list {
+            display: grid;
+            gap: 13px;
+        }
+
+        .task {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #eef2f7;
+            transition: 0.2s ease;
+        }
+
+        .task:hover {
+            background: #eef2ff;
+            transform: translateX(3px);
+        }
+
+        .task-icon {
+            width: 43px;
+            height: 43px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #ede9fe;
+            font-size: 20px;
+        }
+
+        .task-text {
+            flex: 1;
+        }
+
+        .task-text strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #1e293b;
+            font-size: 13px;
+        }
+
+        .task-text span {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        /* SPORTS */
+
+        .sports-list {
+            display: grid;
+            gap: 13px;
+        }
+
+        .sport {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px;
+            border-radius: 14px;
+            background: #f8fafc;
+            border: 1px solid #eef2f7;
+            transition: 0.2s ease;
+        }
+
+        .sport:hover {
+            background: #eff6ff;
+            transform: translateX(3px);
+        }
+
+        .sport-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: #dbeafe;
+            font-size: 23px;
+        }
+
+        .sport-info {
+            flex: 1;
+        }
+
+        .sport-info h4 {
+            margin-bottom: 5px;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .sport-info p {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .recommended {
+            padding: 6px 9px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 9px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        /* EMPTY STATE */
+
+        .empty-state {
+            padding: 65px 35px;
+            text-align: center;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+        }
+
+        .empty-icon {
+            margin-bottom: 22px;
+            font-size: 65px;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 12px;
+            color: #111827;
+            font-size: 25px;
+        }
+
+        .empty-state p {
+            max-width: 650px;
+            margin: 0 auto 28px;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .primary-btn {
+            display: inline-block;
+            padding: 14px 27px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 7px 18px rgba(79, 70, 229, 0.25);
+            transition: 0.25s ease;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1200px) {
+            .health-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .lower-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 850px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 18px 22px;
+            }
+
+            .content {
+                padding: 28px 22px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .health-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h2 {
+                font-size: 17px;
+            }
+
+            .welcome p {
+                font-size: 12px;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 26px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            .health-status {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status-circle {
+                width: 75px;
+                height: 75px;
+                font-size: 23px;
+            }
+
+            .panel-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .sport {
+                align-items: flex-start;
+            }
+
+            .recommended {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="logo">
+            Smart <span>Sports Coach</span>
+        </div>
+
+        <div class="nav-title">
+            Main
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="nav-link active">
+            <span class="nav-icon">🏠</span>
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('assessment') }}" class="nav-link">
+            <span class="nav-icon">📋</span>
+            Health Assessment
+        </a>
+
+        <a href="{{ url_for('result') }}" class="nav-link">
+            <span class="nav-icon">📊</span>
+            My Analysis
+        </a>
+
+        <a href="{{ url_for('recommendations') }}" class="nav-link">
+            <span class="nav-icon">💡</span>
+            Recommendations
+        </a>
+
+        <a href="{{ url_for('weekly_plan') }}" class="nav-link">
+            <span class="nav-icon">📅</span>
+            Weekly Plan
+        </a>
+
+        <div class="nav-title">
+            Wellness
+        </div>
+
+        <a href="{{ url_for('workout_tracker') }}" class="nav-link">
+            <span class="nav-icon">🏋️</span>
+            Workout Tracker
+        </a>
+
+        <a href="{{ url_for('nutrition') }}" class="nav-link">
+            <span class="nav-icon">🥗</span>
+            Nutrition
+        </a>
+
+        <a href="{{ url_for('hydration') }}" class="nav-link">
+            <span class="nav-icon">💧</span>
+            Hydration
+        </a>
+
+        <a href="{{ url_for('progress') }}" class="nav-link">
+            <span class="nav-icon">📈</span>
+            My Progress
+        </a>
+
+        <a href="{{ url_for('exercise_videos') }}" class="nav-link">
+            <span class="nav-icon">🎥</span>
+            Exercise Guide
+        </a>
+
+        <div class="nav-title">
+            Account
+        </div>
+
+        <a href="{{ url_for('settings') }}" class="nav-link">
+            <span class="nav-icon">⚙️</span>
+            Settings
+        </a>
+
+        <div class="logout">
+            <a href="{{ url_for('logout') }}" class="nav-link">
+                <span class="nav-icon">🚪</span>
+                Logout
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    class="mobile-menu"
+                    onclick="toggleSidebar()"
+                    aria-label="Open menu"
+                >
+                    ☰
+                </button>
+
+                <div class="welcome">
+                    <h2>
+                        Welcome, {{ user.name }} 👋
+                    </h2>
+
+                    <p>
+                        Here's your latest health overview.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="profile">
+
+                <div class="avatar">
+                    {{ user.name[0]|upper }}
+                </div>
+
+                <div class="profile-name">
+                    {{ user.name }}
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+            {% if assessment %}
+
+                <div class="page-heading">
+
+                    <h1>
+                        Your Health Dashboard
+                    </h1>
+
+                    <p>
+                        Track your health, fitness and lifestyle progress.
+                    </p>
+
+                </div>
+
+
+                <!-- HEALTH STAT CARDS -->
+
+                <div class="health-grid">
+
+                    <!-- HEALTH SCORE -->
+
+                    <div class="score-card">
+
+                        <div class="card-label">
+                            💚 Health Score
+                        </div>
+
+                        <div class="card-value">
+                            {{ assessment.health_score|round|int }}
+                            <span class="card-unit">/ 100</span>
+                        </div>
+
+                        {% if score_change > 0 %}
+
+                            <div class="change positive">
+                                ↑ {{ score_change }} points
+                            </div>
+
+                        {% elif score_change < 0 %}
+
+                            <div class="change negative">
+                                ↓ {{ score_change|abs }} points
+                            </div>
+
+                        {% else %}
+
+                            <div class="change neutral">
+                                No change
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- BMI -->
+
+                    <div class="score-card">
+
+                        <div class="card-label">
+                            ⚖️ BMI
+                        </div>
+
+                        <div class="card-value">
+                            {{ assessment.bmi|round(1) }}
+                        </div>
+
+                        <div class="change neutral">
+                            {{ assessment.bmi_category }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- WATER -->
+
+                    <div class="score-card">
+
+                        <div class="card-label">
+                            💧 Daily Water
+                        </div>
+
+                        <div class="card-value">
+                            {{ assessment.water_intake|round(1) }}
+                            <span class="card-unit">L</span>
+                        </div>
+
+                        {% if water_change > 0 %}
+
+                            <div class="change positive">
+                                ↑ {{ water_change|round(1) }} L
+                            </div>
+
+                        {% elif water_change < 0 %}
+
+                            <div class="change negative">
+                                ↓ {{ water_change|abs|round(1) }} L
+                            </div>
+
+                        {% else %}
+
+                            <div class="change neutral">
+                                No change
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- SLEEP -->
+
+                    <div class="score-card">
+
+                        <div class="card-label">
+                            😴 Sleep
+                        </div>
+
+                        <div class="card-value">
+                            {{ assessment.sleep_duration|round(1) }}
+                            <span class="card-unit">hrs</span>
+                        </div>
+
+                        {% if sleep_change > 0 %}
+
+                            <div class="change positive">
+                                ↑ {{ sleep_change|round(1) }} hrs
+                            </div>
+
+                        {% elif sleep_change < 0 %}
+
+                            <div class="change negative">
+                                ↓ {{ sleep_change|abs|round(1) }} hrs
+                            </div>
+
+                        {% else %}
+
+                            <div class="change neutral">
+                                No change
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+                <!-- LOWER CONTENT -->
+
+                <div class="lower-grid">
+
+                    <!-- LEFT COLUMN -->
+
+                    <div>
+
+                        <!-- HEALTH OVERVIEW -->
+
+                        <div class="panel">
+
+                            <div class="panel-header">
+
+                                <h3>
+                                    Health Overview
+                                </h3>
+
+                                <a href="{{ url_for('result') }}">
+                                    View Full Analysis →
+                                </a>
+
+                            </div>
+
+
+                            <div class="health-status">
+
+                                <div class="status-circle">
+                                    {{ assessment.health_score|round|int }}
+                                </div>
+
+                                <div class="status-text">
+
+                                    <h4>
+                                        {{ health_status }}
+                                    </h4>
+
+                                    <p>
+                                        {{ health_message }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="details">
+
+                                <div class="detail">
+
+                                    <div class="detail-label">
+                                        Fitness Goal
+                                    </div>
+
+                                    <div class="detail-value">
+                                        {{ assessment.fitness_goal }}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="detail">
+
+                                    <div class="detail-label">
+                                        Activity Level
+                                    </div>
+
+                                    <div class="detail-value">
+                                        {{ assessment.activity_level }}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="detail">
+
+                                    <div class="detail-label">
+                                        BMI Category
+                                    </div>
+
+                                    <div class="detail-value">
+                                        {{ assessment.bmi_category }}
+                                    </div>
+
+                                </div>
+
+
+                                <div class="detail">
+
+                                    <div class="detail-label">
+                                        Recommended Water
+                                    </div>
+
+                                    <div class="detail-value">
+                                        {{ assessment.recommended_water|round(2) }} L/day
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DAILY FOCUS -->
+
+                        <div class="panel focus-card">
+
+                            <div class="panel-header">
+
+                                <h3>
+                                    Today's Focus
+                                </h3>
+
+                                <a href="{{ url_for('weekly_plan') }}">
+                                    Weekly Plan →
+                                </a>
+
+                            </div>
+
+
+                            <div class="focus-list">
+
+                                <div class="task">
+
+                                    <div class="task-icon">
+                                        🏃
+                                    </div>
+
+                                    <div class="task-text">
+
+                                        <strong>
+                                            Stay Active
+                                        </strong>
+
+                                        <span>
+                                            Follow your recommended activity level.
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="task">
+
+                                    <div class="task-icon">
+                                        💧
+                                    </div>
+
+                                    <div class="task-text">
+
+                                        <strong>
+                                            Stay Hydrated
+                                        </strong>
+
+                                        <span>
+                                            Target {{ assessment.recommended_water|round(2) }} L of water today.
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="task">
+
+                                    <div class="task-icon">
+                                        😴
+                                    </div>
+
+                                    <div class="task-text">
+
+                                        <strong>
+                                            Prioritize Sleep
+                                        </strong>
+
+                                        <span>
+                                            Aim for consistent, quality sleep.
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="task">
+
+                                    <div class="task-icon">
+                                        🥗
+                                    </div>
+
+                                    <div class="task-text">
+
+                                        <strong>
+                                            Eat Mindfully
+                                        </strong>
+
+                                        <span>
+                                            Choose balanced and nutritious meals.
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RIGHT COLUMN: SPORTS -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <h3>
+                                Recommended Sports
+                            </h3>
+
+                            <a href="{{ url_for('recommendations') }}">
+                                View All →
+                            </a>
+
+                        </div>
+
+
+                        <div class="sports-list">
+
+                            {% if recommended_sport %}
+
+                                <div class="sport">
+
+                                    <div class="sport-icon">
+                                        🏆
+                                    </div>
+
+                                    <div class="sport-info">
+
+                                        <h4>
+                                            {{ recommended_sport }}
+                                        </h4>
+
+                                        <p>
+                                            Recommended for your current profile.
+                                        </p>
+
+                                    </div>
+
+                                    <span class="recommended">
+                                        BEST MATCH
+                                    </span>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <div class="sport">
+
+                                <div class="sport-icon">
+                                    🚶
+                                </div>
+
+                                <div class="sport-info">
+
+                                    <h4>
+                                        Walking
+                                    </h4>
+
+                                    <p>
+                                        Beginner-friendly cardio activity.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="sport">
+
+                                <div class="sport-icon">
+                                    🧘
+                                </div>
+
+                                <div class="sport-info">
+
+                                    <h4>
+                                        Yoga
+                                    </h4>
+
+                                    <p>
+                                        Flexibility and stress management.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="sport">
+
+                                <div class="sport-icon">
+                                    🚴
+                                </div>
+
+                                <div class="sport-info">
+
+                                    <h4>
+                                        Cycling
+                                    </h4>
+
+                                    <p>
+                                        Low-impact cardiovascular exercise.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="sport">
+
+                                <div class="sport-icon">
+                                    🏊
+                                </div>
+
+                                <div class="sport-info">
+
+                                    <h4>
+                                        Swimming
+                                    </h4>
+
+                                    <p>
+                                        Full-body low-impact workout.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            {% else %}
+
+                <!-- NO ASSESSMENT -->
+
+                <div class="page-heading">
+
+                    <h1>
+                        Welcome to Smart Sports Coach
+                    </h1>
+
+                    <p>
+                        Let's begin by understanding your health and lifestyle.
+                    </p>
+
+                </div>
+
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🏃‍♀️
+                    </div>
+
+                    <h2>
+                        Complete Your Health Assessment
+                    </h2>
+
+                    <p>
+                        Tell us about your age, height, weight, activity level,
+                        sleep and fitness goals. We will analyze your information
+                        and create personalized recommendations.
+                    </p>
+
+                    <a
+                        href="{{ url_for('assessment') }}"
+                        class="primary-btn"
+                    >
+                        Start Health Assessment →
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+
+            sidebar.classList.toggle("show");
+        }
+    </script>
+
+</body>
+
+</html>

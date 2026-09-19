@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Hydration | Smart Sports Coach</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f0f9ff;
+            color: #0f172a;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+
+            padding: 25px 18px;
+
+            background: linear-gradient(
+                180deg,
+                #0369a1,
+                #075985,
+                #0c4a6e
+            );
+
+            color: white;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 10px 12px 30px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #bae6fd;
+        }
+
+        .nav-title {
+            padding: 15px 12px 8px;
+
+            color: #bae6fd;
+
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px;
+            margin-bottom: 5px;
+
+            border-radius: 10px;
+
+            color: #e0f2fe;
+            text-decoration: none;
+
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.18);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .main {
+            min-height: 100vh;
+            margin-left: 250px;
+        }
+
+        .topbar {
+            min-height: 75px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            background: white;
+            border-bottom: 1px solid #e0f2fe;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .welcome h2 {
+            color: #0c4a6e;
+            font-size: 21px;
+        }
+
+        .welcome p {
+            margin-top: 5px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #0284c7,
+                #075985
+            );
+
+            color: white;
+            font-weight: bold;
+        }
+
+        .profile-name {
+            color: #0f172a;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px 35px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            color: #0c4a6e;
+            font-size: 30px;
+        }
+
+        .page-heading p {
+            margin-top: 8px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .hero-card {
+            padding: 30px;
+            border-radius: 22px;
+
+            background: linear-gradient(
+                135deg,
+                #0284c7,
+                #0369a1,
+                #075985
+            );
+
+            color: white;
+
+            box-shadow:
+                0 12px 30px rgba(3, 105, 161, 0.18);
+        }
+
+        .water-icon {
+            margin-bottom: 15px;
+            font-size: 48px;
+        }
+
+        .hero-card h2 {
+            margin-bottom: 12px;
+            font-size: 25px;
+        }
+
+        .hero-card p {
+            color: #e0f2fe;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .target-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            padding: 30px;
+            border-radius: 22px;
+
+            background: white;
+            border: 1px solid #bae6fd;
+        }
+
+        .target-label {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .target-value {
+            margin: 12px 0;
+            color: #0284c7;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .target-note {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .card {
+            margin-bottom: 22px;
+            padding: 27px;
+
+            border-radius: 20px;
+
+            background: white;
+            border: 1px solid #e0f2fe;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .card-icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+            background: #e0f2fe;
+
+            font-size: 23px;
+        }
+
+        .card-title h2 {
+            color: #0c4a6e;
+            font-size: 20px;
+        }
+
+        .card-title p {
+            margin-top: 4px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .progress-box {
+            margin-bottom: 22px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+
+            margin-bottom: 10px;
+
+            color: #475569;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 16px;
+
+            overflow: hidden;
+            border-radius: 20px;
+            background: #e0f2fe;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+
+            border-radius: 20px;
+
+            background: linear-gradient(
+                90deg,
+                #38bdf8,
+                #0284c7
+            );
+
+            transition: width 0.5s ease;
+        }
+
+        .glasses-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 12px;
+        }
+
+        .glass {
+            min-height: 95px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px 5px;
+
+            border: 1px solid #bae6fd;
+            border-radius: 14px;
+
+            background: #f0f9ff;
+            color: #0284c7;
+
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .glass:hover {
+            transform: translateY(-3px);
+            background: #e0f2fe;
+        }
+
+        .glass.completed {
+            background: #0284c7;
+            border-color: #0284c7;
+            color: white;
+        }
+
+        .glass-icon {
+            margin-bottom: 7px;
+            font-size: 27px;
+        }
+
+        .glass-number {
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .glass-status {
+            margin-top: 4px;
+            font-size: 10px;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 17px;
+        }
+
+        .tip {
+            padding: 20px;
+            border-radius: 15px;
+
+            background: #f0f9ff;
+            border: 1px solid #e0f2fe;
+        }
+
+        .tip-icon {
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .tip h3 {
+            margin-bottom: 8px;
+            color: #0c4a6e;
+            font-size: 15px;
+        }
+
+        .tip p {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .info-box {
+            padding: 20px;
+            border-radius: 15px;
+
+            background: #ecfeff;
+            border: 1px solid #a5f3fc;
+        }
+
+        .info-box h3 {
+            margin-bottom: 8px;
+            color: #155e75;
+            font-size: 15px;
+        }
+
+        .info-box p {
+            color: #475569;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+
+            padding: 13px 20px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: #0284c7;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+        }
+
+        .mobile-menu {
+            display: none;
+
+            padding: 0;
+
+            border: none;
+
+            background: transparent;
+
+            color: #075985;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 1050px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .glasses-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .tips-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .profile-name {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .target-value {
+                font-size: 35px;
+            }
+
+            .glasses-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body
+    data-recommended-water="{% if assessment %}{{ assessment.recommended_water }}{% else %}0{% endif %}"
+>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Smart <span>Sports Coach</span>
+    </div>
+
+
+    <div class="nav-title">
+        Main
+    </div>
+
+
+    <a href="{{ url_for('dashboard') }}" class="nav-link">
+        <span class="nav-icon">🏠</span>
+        Dashboard
+    </a>
+
+
+    <a href="{{ url_for('assessment') }}" class="nav-link">
+        <span class="nav-icon">📋</span>
+        Health Assessment
+    </a>
+
+
+    <a href="{{ url_for('result') }}" class="nav-link">
+        <span class="nav-icon">📊</span>
+        My Analysis
+    </a>
+
+
+    <a href="{{ url_for('recommendations') }}" class="nav-link">
+        <span class="nav-icon">💡</span>
+        Recommendations
+    </a>
+
+
+    <a href="{{ url_for('weekly_plan') }}" class="nav-link">
+        <span class="nav-icon">📅</span>
+        Weekly Plan
+    </a>
+
+
+    <div class="nav-title">
+        Wellness
+    </div>
+
+
+    <a href="{{ url_for('nutrition') }}" class="nav-link">
+        <span class="nav-icon">🥗</span>
+        Nutrition
+    </a>
+
+
+    <a href="{{ url_for('hydration') }}" class="nav-link active">
+        <span class="nav-icon">💧</span>
+        Hydration
+    </a>
+
+
+    <a href="{{ url_for('progress') }}" class="nav-link">
+        <span class="nav-icon">📈</span>
+        My Progress
+    </a>
+
+
+    <a href="{{ url_for('exercise_videos') }}" class="nav-link">
+        <span class="nav-icon">🎥</span>
+        Exercise Guide
+    </a>
+
+
+    <div class="nav-title">
+        Account
+    </div>
+
+
+    <a href="{{ url_for('settings') }}" class="nav-link">
+        <span class="nav-icon">⚙️</span>
+        Settings
+    </a>
+
+
+    <div class="logout">
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            <span class="nav-icon">🚪</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+
+            <button
+                class="mobile-menu"
+                id="mobileMenuButton"
+                type="button"
+                aria-label="Open menu"
+            >
+                ☰
+            </button>
+
+
+            <div class="welcome">
+
+                <h2>
+                    Hydration Center 💧
+                </h2>
+
+                <p>
+                    Stay hydrated and support your daily wellness.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ user.name[0]|upper }}
+            </div>
+
+            <div class="profile-name">
+                {{ user.name }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+        <div class="page-heading">
+
+            <h1>
+                Daily Hydration 💧
+            </h1>
+
+            <p>
+                Track your water intake and maintain healthy hydration habits.
+            </p>
+
+        </div>
+
+
+
+        {% if assessment %}
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+
+            <div class="hero-card">
+
+                <div class="water-icon">
+                    💧
+                </div>
+
+                <h2>
+                    Keep Your Body Hydrated
+                </h2>
+
+                <p>
+                    Drinking enough water supports energy, concentration,
+                    digestion, exercise performance and overall wellness.
+                    Use the tracker below to record your daily glasses.
+                </p>
+
+            </div>
+
+
+            <div class="target-card">
+
+                <div class="target-label">
+                    Your Recommended Daily Target
+                </div>
+
+                <div class="target-value">
+                    {{ assessment.recommended_water }} L
+                </div>
+
+                <div class="target-note">
+                    Based on your current body weight.
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- PROGRESS -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <div class="card-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <h2>
+                        Today's Water Progress
+                    </h2>
+
+                    <p>
+                        Select each glass after drinking water.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-box">
+
+                <div class="progress-top">
+
+                    <span>
+                        Water consumed
+                    </span>
+
+                    <span id="progressText">
+                        0 L / {{ assessment.recommended_water }} L
+                    </span>
+
+                </div>
+
+
+                <div class="progress-track">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="glasses-grid">
+
+
+                {% for number in range(1, 9) %}
+
+                <button
+                    type="button"
+                    class="glass"
+                    data-glass="{{ number }}"
+                >
+
+                    <span class="glass-icon">
+                        💧
+                    </span>
+
+                    <span class="glass-number">
+                        Glass {{ number }}
+                    </span>
+
+                    <span class="glass-status">
+                        Not taken
+                    </span>
+
+                </button>
+
+                {% endfor %}
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- DETAILS -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <div class="card-icon">
+                    🧾
+                </div>
+
+                <div>
+
+                    <h2>
+                        Your Hydration Details
+                    </h2>
+
+                    <p>
+                        Information from your latest assessment.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tips-grid">
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        ⚖️
+                    </div>
+
+                    <h3>
+                        Body Weight
+                    </h3>
+
+                    <p>
+                        Your recorded weight is
+                        <strong>
+                            {{ assessment.weight }} kg
+                        </strong>.
+                    </p>
+
+                </div>
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        🎯
+                    </div>
+
+                    <h3>
+                        Recommended Target
+                    </h3>
+
+                    <p>
+                        Your recommended daily water target is
+                        <strong>
+                            {{ assessment.recommended_water }} litres
+                        </strong>.
+                    </p>
+
+                </div>
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        🥤
+                    </div>
+
+                    <h3>
+                        Recorded Intake
+                    </h3>
+
+                    <p>
+                        Your assessment recorded
+                        <strong>
+                            {{ assessment.water_intake }} litres
+                        </strong>
+                        of daily water intake.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- TIPS -->
+
+        <section class="card">
+
+            <div class="card-title">
+
+                <div class="card-icon">
+                    🌊
+                </div>
+
+                <div>
+
+                    <h2>
+                        Hydration Tips
+                    </h2>
+
+                    <p>
+                        Simple habits to improve your daily water intake.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tips-grid">
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        ⏰
+                    </div>
+
+                    <h3>
+                        Drink Regularly
+                    </h3>
+
+                    <p>
+                        Drink small amounts of water throughout the day
+                        instead of waiting until you feel very thirsty.
+                    </p>
+
+                </div>
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        🏃
+                    </div>
+
+                    <h3>
+                        Before Exercise
+                    </h3>
+
+                    <p>
+                        Drink water before physical activity and take
+                        regular breaks during exercise.
+                    </p>
+
+                </div>
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        🌞
+                    </div>
+
+                    <h3>
+                        Hot Weather
+                    </h3>
+
+                    <p>
+                        Pay extra attention to hydration during hot weather
+                        or when sweating more than usual.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- NOTICE -->
+
+        <div class="info-box">
+
+            <h3>
+                Important Note
+            </h3>
+
+            <p>
+                This tracker is a simple wellness guide. Your water needs
+                may change depending on exercise, weather, diet and medical
+                advice. If a healthcare professional has given you a fluid
+                restriction, follow their advice.
+            </p>
+
+        </div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="btn btn-primary"
+            >
+                🏠 Back to Dashboard
+            </a>
+
+
+            <a
+                href="{{ url_for('nutrition') }}"
+                class="btn btn-secondary"
+            >
+                🥗 Nutrition
+            </a>
+
+
+            <a
+                href="{{ url_for('progress') }}"
+                class="btn btn-secondary"
+            >
+                📈 View Progress
+            </a>
+
+
+            <a
+                href="{{ url_for('recommendations') }}"
+                class="btn btn-secondary"
+            >
+                💡 Recommendations
+            </a>
+
+        </div>
+
+
+
+        {% else %}
+
+
+        <!-- NO ASSESSMENT -->
+
+        <section class="card">
+
+            <div
+                style="
+                    text-align: center;
+                    padding: 35px 15px;
+                "
+            >
+
+                <div
+                    style="
+                        font-size: 55px;
+                        margin-bottom: 15px;
+                    "
+                >
+                    💧
+                </div>
+
+                <h2
+                    style="
+                        color: #0c4a6e;
+                        margin-bottom: 12px;
+                    "
+                >
+                    Complete Your Health Assessment
+                </h2>
+
+                <p
+                    style="
+                        color: #64748b;
+                        font-size: 14px;
+                        line-height: 1.7;
+                        margin-bottom: 22px;
+                    "
+                >
+                    Complete your health assessment first to receive
+                    your personalized hydration target.
+                </p>
+
+                <a
+                    href="{{ url_for('assessment') }}"
+                    class="btn btn-primary"
+                >
+                    Start Assessment →
+                </a>
+
+            </div>
+
+        </section>
+
+
+        {% endif %}
+
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+    const recommendedWater = Number(
+        document.body.dataset.recommendedWater || 0
+    );
+
+    const glassAmount = 0.25;
+
+    let completedGlasses = 0;
+
+
+    function toggleGlass(glass) {
+
+        const status =
+            glass.querySelector(".glass-status");
+
+        const isCompleted =
+            glass.classList.contains("completed");
+
+
+        if (isCompleted) {
+
+            glass.classList.remove("completed");
+
+            status.textContent = "Not taken";
+
+            completedGlasses--;
+
+        } else {
+
+            glass.classList.add("completed");
+
+            status.textContent = "Completed";
+
+            completedGlasses++;
+
+        }
+
+
+        updateHydrationProgress();
+
+    }
+
+
+    function updateHydrationProgress() {
+
+        const consumedWater =
+            completedGlasses * glassAmount;
+
+
+        let percentage = 0;
+
+
+        if (recommendedWater > 0) {
+
+            percentage =
+                (consumedWater / recommendedWater) * 100;
+
+        }
+
+
+        if (percentage > 100) {
+
+            percentage = 100;
+
+        }
+
+
+        const progressFill =
+            document.getElementById("progressFill");
+
+
+        const progressText =
+            document.getElementById("progressText");
+
+
+        if (progressFill) {
+
+            progressFill.style.width =
+                percentage + "%";
+
+        }
+
+
+        if (progressText) {
+
+            progressText.textContent =
+                consumedWater.toFixed(2)
+                + " L / "
+                + recommendedWater.toFixed(2)
+                + " L";
+
+        }
+
+    }
+
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("show");
+
+    }
+
+
+    const glassButtons =
+        document.querySelectorAll(".glass");
+
+
+    glassButtons.forEach(function (glass) {
+
+        glass.addEventListener("click", function () {
+
+            toggleGlass(glass);
+
+        });
+
+    });
+
+
+    const mobileMenuButton =
+        document.getElementById("mobileMenuButton");
+
+
+    if (mobileMenuButton) {
+
+        mobileMenuButton.addEventListener(
+            "click",
+            toggleSidebar
+        );
+
+    }
+
+
+    updateHydrationProgress();
+
+</script>
+
+
+</body>
+
+</html>

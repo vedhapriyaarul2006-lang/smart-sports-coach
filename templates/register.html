@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Smart Sports Coach</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef7ff, #f7f0ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1100px;
+            min-height: 650px;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        /* LEFT SIDE */
+
+        .left-section {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 50px;
+        }
+
+        .logo span {
+            color: #dbeafe;
+        }
+
+        .left-section h1 {
+            font-size: 45px;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .left-section p {
+            font-size: 17px;
+            line-height: 1.7;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .benefits {
+            display: grid;
+            gap: 15px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+        }
+
+        .benefit-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 19px;
+        }
+
+        /* RIGHT SIDE */
+
+        .right-section {
+            padding: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .back-home {
+            display: inline-block;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+        .right-section h2 {
+            font-size: 34px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .password-note {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            border: none;
+            padding: 15px;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* FLASH MESSAGE */
+
+        .flash-container {
+            margin-bottom: 18px;
+        }
+
+        .flash {
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .flash.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .flash.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .flash.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .flash.info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 850px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .page {
+                grid-template-columns: 1fr;
+            }
+
+            .left-section {
+                padding: 40px 30px;
+            }
+
+            .logo {
+                margin-bottom: 30px;
+            }
+
+            .left-section h1 {
+                font-size: 35px;
+            }
+
+            .right-section {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .left-section {
+                padding: 30px 22px;
+            }
+
+            .right-section {
+                padding: 30px 22px;
+            }
+
+            .left-section h1 {
+                font-size: 30px;
+            }
+
+            .right-section h2 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- LEFT SIDE -->
+
+    <section class="left-section">
+
+        <div class="logo">
+            Smart <span>Sports Coach</span>
+        </div>
+
+        <h1>
+            Start Your Health Journey Today 🚀
+        </h1>
+
+        <p>
+            Create your account and get personalized health,
+            fitness, sports, nutrition and hydration recommendations
+            based on your lifestyle.
+        </p>
+
+        <div class="benefits">
+
+            <div class="benefit">
+                <div class="benefit-icon">📊</div>
+                <span>Personalized health analysis</span>
+            </div>
+
+            <div class="benefit">
+                <div class="benefit-icon">🏃</div>
+                <span>Smart sports recommendations</span>
+            </div>
+
+            <div class="benefit">
+                <div class="benefit-icon">🥗</div>
+                <span>Nutrition guidance</span>
+            </div>
+
+            <div class="benefit">
+                <div class="benefit-icon">💧</div>
+                <span>Hydration tracking</span>
+            </div>
+
+            <div class="benefit">
+                <div class="benefit-icon">📅</div>
+                <span>Weekly fitness planning</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE -->
+
+    <section class="right-section">
+
+        <a href="{{ url_for('index') }}" class="back-home">
+            ← Back to Home
+        </a>
+
+        <h2>Create Account</h2>
+
+        <p class="subtitle">
+            Register to begin your personalized fitness journey.
+        </p>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                <div class="flash-container">
+
+                    {% for category, message in messages %}
+
+                        <div class="flash {{ category }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- REGISTRATION FORM -->
+
+        <form method="POST" action="{{ url_for('register') }}">
+
+            <div class="form-group">
+
+                <label for="name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    minlength="6"
+                    required
+                >
+
+                <div class="password-note">
+                    Password should contain at least 6 characters.
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    placeholder="Re-enter your password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit" class="submit-btn">
+                Create My Account →
+            </button>
+
+        </form>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Login here
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", function(event) {
+
+        const password =
+            document.getElementById("password").value;
+
+        const confirmPassword =
+            document.getElementById("confirm_password").value;
+
+        if (password !== confirmPassword) {
+
+            event.preventDefault();
+
+            alert("Passwords do not match.");
+
+            return;
+        }
+
+        if (password.length < 6) {
+
+            event.preventDefault();
+
+            alert("Password must contain at least 6 characters.");
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

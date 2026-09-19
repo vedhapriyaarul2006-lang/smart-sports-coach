@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Weekly Fitness Plan | Smart Sports Coach</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+
+            background: linear-gradient(
+                180deg,
+                #1e3a8a,
+                #4c1d95
+            );
+
+            color: white;
+            padding: 25px 18px;
+
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            padding: 10px 12px 30px;
+        }
+
+        .logo span {
+            color: #c4b5fd;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cbd5e1;
+
+            padding: 15px 12px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px;
+            margin-bottom: 5px;
+
+            border-radius: 10px;
+
+            color: #e2e8f0;
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 20px;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            height: 75px;
+
+            background: white;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 0 35px;
+        }
+
+        .welcome h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .welcome p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: bold;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px 35px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .page-heading p {
+            color: #6b7280;
+            margin-top: 7px;
+        }
+
+        /* PLAN HEADER */
+
+        .plan-header {
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+            color: white;
+
+            border-radius: 22px;
+
+            padding: 28px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(37, 99, 235, 0.18);
+        }
+
+        .plan-header h2 {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .plan-header p {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.92;
+            max-width: 850px;
+        }
+
+        .goal-badge {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 8px 14px;
+
+            border-radius: 20px;
+
+            background: rgba(255,255,255,0.18);
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* SUMMARY */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 17px;
+
+            padding: 20px;
+        }
+
+        .summary-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .summary-value {
+            font-size: 19px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        /* WEEKLY PLAN */
+
+        .section-title {
+            margin: 30px 0 17px;
+        }
+
+        .section-title h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .section-title p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .week-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .day-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+            transition: 0.3s;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .day-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(0,0,0,0.08);
+        }
+
+        .day-card::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            top: 0;
+
+            width: 5px;
+            height: 100%;
+
+            background: linear-gradient(
+                180deg,
+                #2563eb,
+                #7c3aed
+            );
+        }
+
+        .day-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 16px;
+        }
+
+        .day-name {
+            font-size: 19px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .day-number {
+            width: 35px;
+            height: 35px;
+
+            border-radius: 50%;
+
+            background: #ede9fe;
+
+            color: #6d28d9;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .activity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 13px;
+
+            background: #f8fafc;
+
+            border-radius: 12px;
+
+            margin-bottom: 10px;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+
+            background: #dbeafe;
+
+            border-radius: 10px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 20px;
+
+            flex-shrink: 0;
+        }
+
+        .activity-info strong {
+            display: block;
+
+            font-size: 14px;
+
+            color: #111827;
+
+            margin-bottom: 4px;
+        }
+
+        .activity-info span {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .day-note {
+            margin-top: 13px;
+
+            font-size: 12px;
+
+            color: #6b7280;
+
+            line-height: 1.5;
+        }
+
+        /* REST DAY */
+
+        .rest-day {
+            background: #f8fafc;
+        }
+
+        .rest-day .activity-icon {
+            background: #dcfce7;
+        }
+
+        /* TIPS */
+
+        .tips-panel {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            margin-top: 25px;
+        }
+
+        .tips-panel h3 {
+            font-size: 19px;
+            margin-bottom: 17px;
+        }
+
+        .tips-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .tip {
+            background: #f8fafc;
+
+            border-radius: 13px;
+
+            padding: 17px;
+        }
+
+        .tip-icon {
+            font-size: 22px;
+            margin-bottom: 9px;
+        }
+
+        .tip p {
+            font-size: 13px;
+
+            color: #4b5563;
+
+            line-height: 1.5;
+        }
+
+        /* BUTTONS */
+
+        .actions {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 13px 21px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .primary {
+            background: linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+            color: white;
+        }
+
+        .secondary {
+            background: white;
+
+            border: 1px solid #d1d5db;
+
+            color: #374151;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* MOBILE */
+
+        .mobile-menu {
+            display: none;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 1000px) {
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .week-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Smart <span>Sports Coach</span>
+    </div>
+
+
+    <div class="nav-title">
+        Main
+    </div>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🏠</span>
+        Dashboard
+    </a>
+
+
+    <a
+        href="{{ url_for('assessment') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📋</span>
+        Health Assessment
+    </a>
+
+
+    <a
+        href="{{ url_for('result') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📊</span>
+        My Analysis
+    </a>
+
+
+    <a
+        href="{{ url_for('recommendations') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">💡</span>
+        Recommendations
+    </a>
+
+
+    <a
+        href="{{ url_for('weekly_plan') }}"
+        class="nav-link active"
+    >
+        <span class="nav-icon">📅</span>
+        Weekly Plan
+    </a>
+
+
+    <div class="nav-title">
+        Wellness
+    </div>
+
+
+    <a
+        href="{{ url_for('nutrition') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🥗</span>
+        Nutrition
+    </a>
+
+
+    <a
+        href="{{ url_for('hydration') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">💧</span>
+        Hydration
+    </a>
+
+
+    <a
+        href="{{ url_for('progress') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📈</span>
+        My Progress
+    </a>
+
+
+    <a
+        href="{{ url_for('exercise_videos') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🎥</span>
+        Exercise Guide
+    </a>
+
+
+    <div class="nav-title">
+        Account
+    </div>
+
+
+    <a
+        href="{{ url_for('settings') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">⚙️</span>
+        Settings
+    </a>
+
+
+    <div class="logout">
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="nav-link"
+        >
+            <span class="nav-icon">🚪</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                gap:15px;
+            "
+        >
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+
+            <div class="welcome">
+
+                <h2>
+                    Weekly Fitness Plan
+                </h2>
+
+                <p>
+                    Your personalized 7-day activity schedule.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ user.name[0]|upper }}
+            </div>
+
+            <div class="profile-name">
+                {{ user.name }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+        {% if assessment %}
+
+
+        <!-- HEADING -->
+
+        <div class="page-heading">
+
+            <h1>
+                Your Weekly Fitness Plan 📅
+            </h1>
+
+            <p>
+                A simple 7-day plan created around your fitness goal.
+            </p>
+
+        </div>
+
+
+
+        <!-- PLAN HEADER -->
+
+        <div class="plan-header">
+
+            <h2>
+                Let's Make This Week Count! 💪
+            </h2>
+
+            <p>
+                Stay consistent with your activities, give your body
+                enough recovery time and gradually build healthy
+                exercise habits.
+            </p>
+
+
+            <div class="goal-badge">
+
+                🎯 Goal:
+                {{ assessment.fitness_goal }}
+
+            </div>
+
+        </div>
+
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary-grid">
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ⚖️
+                </div>
+
+                <div class="summary-label">
+                    Current BMI
+                </div>
+
+                <div class="summary-value">
+                    {{ assessment.bmi|round(1) }}
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    ❤️
+                </div>
+
+                <div class="summary-label">
+                    Health Score
+                </div>
+
+                <div class="summary-value">
+                    {{ assessment.health_score|round|int }}/100
+                </div>
+
+            </div>
+
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    🏃
+                </div>
+
+                <div class="summary-label">
+                    Activity Level
+                </div>
+
+                <div class="summary-value">
+                    {{ assessment.activity_level }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- WEEKLY SCHEDULE -->
+
+        <div class="section-title">
+
+            <h2>
+                7-Day Activity Schedule
+            </h2>
+
+            <p>
+                Complete each day's activities at a comfortable
+                intensity and listen to your body.
+            </p>
+
+        </div>
+
+
+
+        <div class="week-grid">
+
+
+            <!-- MONDAY -->
+
+            <div class="day-card">
+
+                <div class="day-header">
+
+                    <div class="day-name">
+                        Monday
+                    </div>
+
+                    <div class="day-number">
+                        01
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🚶
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Brisk Walking
+                        </strong>
+
+                        <span>
+                            30 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🧘
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Stretching
+                        </strong>
+
+                        <span>
+                            10 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="day-note">
+                    Start the week with moderate movement and
+                    gentle stretching.
+                </p>
+
+            </div>
+
+
+
+            <!-- TUESDAY -->
+
+            <div class="day-card">
+
+                <div class="day-header">
+
+                    <div class="day-name">
+                        Tuesday
+                    </div>
+
+                    <div class="day-number">
+                        02
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🏋️
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Strength Training
+                        </strong>
+
+                        <span>
+                            25–30 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🧘
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Cool Down
+                        </strong>
+
+                        <span>
+                            10 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="day-note">
+                    Focus on controlled movements and good exercise
+                    technique.
+                </p>
+
+            </div>
+
+
+
+            <!-- WEDNESDAY -->
+
+            <div class="day-card">
+
+                <div class="day-header">
+
+                    <div class="day-name">
+                        Wednesday
+                    </div>
+
+                    <div class="day-number">
+                        03
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🚴
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Cycling
+                        </strong>
+
+                        <span>
+                            30 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🧘
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Mobility Exercises
+                        </strong>
+
+                        <span>
+                            10 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="day-note">
+                    Keep a steady pace and maintain comfortable
+                    breathing.
+                </p>
+
+            </div>
+
+
+
+            <!-- THURSDAY -->
+
+            <div class="day-card">
+
+                <div class="day-header">
+
+                    <div class="day-name">
+                        Thursday
+                    </div>
+
+                    <div class="day-number">
+                        04
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🏃
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Cardio Workout
+                        </strong>
+
+                        <span>
+                            25–30 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🤸
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Full Body Stretch
+                        </strong>
+
+                        <span>
+                            10 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="day-note">
+                    Choose an intensity that matches your current
+                    fitness level.
+                </p>
+
+            </div>
+
+
+
+            <!-- FRIDAY -->
+
+            <div class="day-card">
+
+                <div class="day-header">
+
+                    <div class="day-name">
+                        Friday
+                    </div>
+
+                    <div class="day-number">
+                        05
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🏸
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Recreational Sport
+                        </strong>
+
+                        <span>
+                            30–45 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🧘
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Recovery Stretch
+                        </strong>
+
+                        <span>
+                            10 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="day-note">
+                    Choose a sport you enjoy to make exercise more
+                    enjoyable.
+                </p>
+
+            </div>
+
+
+
+            <!-- SATURDAY -->
+
+            <div class="day-card">
+
+                <div class="day-header">
+
+                    <div class="day-name">
+                        Saturday
+                    </div>
+
+                    <div class="day-number">
+                        06
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🥾
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Outdoor Activity
+                        </strong>
+
+                        <span>
+                            40–60 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🧘
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Relaxation
+                        </strong>
+
+                        <span>
+                            10–15 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="day-note">
+                    Use the weekend to enjoy outdoor movement and
+                    fresh air.
+                </p>
+
+            </div>
+
+
+
+            <!-- SUNDAY -->
+
+            <div class="day-card rest-day">
+
+                <div class="day-header">
+
+                    <div class="day-name">
+                        Sunday
+                    </div>
+
+                    <div class="day-number">
+                        07
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        😌
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Active Recovery
+                        </strong>
+
+                        <span>
+                            15–20 minutes
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="activity">
+
+                    <div class="activity-icon">
+                        🚶
+                    </div>
+
+                    <div class="activity-info">
+
+                        <strong>
+                            Easy Walk
+                        </strong>
+
+                        <span>
+                            Optional
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p class="day-note">
+                    Recovery is part of fitness. Give your body
+                    time to rest and prepare for the next week.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TIPS -->
+
+        <div class="tips-panel">
+
+            <h3>
+                🌟 Weekly Fitness Tips
+            </h3>
+
+
+            <div class="tips-grid">
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        💧
+                    </div>
+
+                    <p>
+                        Stay hydrated throughout the day and work
+                        toward your personalized water target.
+                    </p>
+
+                </div>
+
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        😴
+                    </div>
+
+                    <p>
+                        Maintain a consistent sleep schedule so
+                        your body gets enough recovery.
+                    </p>
+
+                </div>
+
+
+
+                <div class="tip">
+
+                    <div class="tip-icon">
+                        🥗
+                    </div>
+
+                    <p>
+                        Combine regular activity with balanced
+                        and nutritious meals.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('exercise_videos') }}"
+                class="action-btn primary"
+            >
+                🎥 Exercise Guide
+            </a>
+
+
+            <a
+                href="{{ url_for('progress') }}"
+                class="action-btn primary"
+            >
+                📈 Track My Progress
+            </a>
+
+
+            <a
+                href="{{ url_for('nutrition') }}"
+                class="action-btn secondary"
+            >
+                🥗 Nutrition
+            </a>
+
+
+            <a
+                href="{{ url_for('hydration') }}"
+                class="action-btn secondary"
+            >
+                💧 Hydration
+            </a>
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- NO ASSESSMENT -->
+
+        <div
+            style="
+                background:white;
+                border:1px solid #e5e7eb;
+                border-radius:20px;
+                padding:60px 30px;
+                text-align:center;
+            "
+        >
+
+            <div style="font-size:60px;margin-bottom:20px;">
+                📋
+            </div>
+
+            <h2 style="margin-bottom:12px;">
+                Complete Your Health Assessment
+            </h2>
+
+            <p
+                style="
+                    color:#6b7280;
+                    margin-bottom:25px;
+                "
+            >
+                Complete your assessment first to access your
+                personalized weekly fitness plan.
+            </p>
+
+            <a
+                href="{{ url_for('assessment') }}"
+                class="action-btn primary"
+            >
+                Start Assessment →
+            </a>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("show");
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

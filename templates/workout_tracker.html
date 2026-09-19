@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Workout Tracker | Smart Sports Coach</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #172554,
+                    #1e3a8a,
+                    #2563eb
+                );
+
+            color: white;
+            padding: 25px 15px;
+
+            overflow-y: auto;
+
+            box-shadow: 4px 0 20px rgba(0,0,0,0.12);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+
+            margin-bottom: 35px;
+
+            padding-bottom: 20px;
+
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            color: white;
+            text-decoration: none;
+
+            padding: 14px 15px;
+            margin: 7px 0;
+
+            border-radius: 12px;
+
+            font-size: 15px;
+
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,0.16);
+
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: #3b82f6;
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+
+        /* ================= MAIN ================= */
+
+        .main-content {
+            margin-left: 250px;
+            padding: 35px;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 30px;
+
+            gap: 20px;
+        }
+
+        .header h1 {
+            color: #172554;
+
+            font-size: 32px;
+
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #64748b;
+
+            font-size: 15px;
+        }
+
+        .back-btn {
+            background: #172554;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 12px 20px;
+
+            border-radius: 12px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #2563eb;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ================= FLASH ================= */
+
+        .flash-message {
+            background: #dcfce7;
+
+            color: #166534;
+
+            padding: 15px 18px;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            border-left: 5px solid #16a34a;
+
+            font-weight: 600;
+        }
+
+
+        /* ================= STATISTICS ================= */
+
+        .stats-container {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 5px 20px rgba(15,23,42,0.07);
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 12px 25px rgba(15,23,42,0.12);
+        }
+
+        .stat-card::after {
+            content: "";
+
+            position: absolute;
+
+            right: -30px;
+            top: -30px;
+
+            width: 90px;
+            height: 90px;
+
+            background: #dbeafe;
+
+            border-radius: 50%;
+        }
+
+        .stat-icon {
+            font-size: 30px;
+
+            margin-bottom: 12px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .stat-card h3 {
+            color: #64748b;
+
+            font-size: 14px;
+
+            margin-bottom: 10px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+        .stat-card h2 {
+            color: #172554;
+
+            font-size: 30px;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        /* ================= SECTION CARDS ================= */
+
+        .form-card,
+        .history-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 5px 20px rgba(15,23,42,0.07);
+
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+        }
+
+        .section-title h2 {
+            color: #172554;
+
+            font-size: 22px;
+        }
+
+        .section-title p {
+            color: #64748b;
+
+            font-size: 14px;
+
+            margin-top: 4px;
+        }
+
+
+        /* ================= FORM ================= */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+
+            font-weight: bold;
+
+            color: #334155;
+
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+
+            padding: 14px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 11px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background: #f8fafc;
+
+            transition: 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 3px rgba(37,99,235,0.10);
+        }
+
+        .form-group input[readonly] {
+            background: #e0f2fe;
+
+            color: #075985;
+
+            font-weight: bold;
+
+            border-color: #bae6fd;
+        }
+
+
+        /* ================= CHECKBOX ================= */
+
+        .checkbox-group {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 25px;
+
+            padding: 15px;
+
+            background: #f8fafc;
+
+            border-radius: 12px;
+        }
+
+        .checkbox-group input {
+            width: 18px;
+
+            height: 18px;
+
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-weight: 600;
+
+            color: #334155;
+
+            cursor: pointer;
+        }
+
+
+        /* ================= SUBMIT BUTTON ================= */
+
+        .submit-btn {
+            width: 100%;
+
+            margin-top: 25px;
+
+            padding: 16px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #2563eb,
+                    #3b82f6
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background:
+                linear-gradient(
+                    90deg,
+                    #1d4ed8,
+                    #2563eb
+                );
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 18px rgba(37,99,235,0.25);
+        }
+
+
+        /* ================= TABLE ================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .workout-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 750px;
+        }
+
+        .workout-table th,
+        .workout-table td {
+            padding: 16px;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid #e2e8f0;
+        }
+
+        .workout-table th {
+            background: #eff6ff;
+
+            color: #172554;
+
+            font-size: 14px;
+        }
+
+        .workout-table td {
+            color: #475569;
+
+            font-size: 14px;
+        }
+
+        .workout-table tr:hover {
+            background: #f8fafc;
+        }
+
+
+        /* ================= CATEGORY BADGES ================= */
+
+        .category-badge {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+
+        /* ================= STATUS ================= */
+
+        .completed {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+            font-weight: bold;
+
+            font-size: 12px;
+        }
+
+        .not-completed {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            background: #fee2e2;
+
+            color: #dc2626;
+
+            font-weight: bold;
+
+            font-size: 12px;
+        }
+
+
+        /* ================= DELETE ================= */
+
+        .delete-btn {
+            display: inline-block;
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+            text-decoration: none;
+
+            padding: 8px 12px;
+
+            border-radius: 8px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #fecaca;
+
+            transform: scale(1.03);
+        }
+
+
+        /* ================= EMPTY ================= */
+
+        .empty-message {
+            text-align: center;
+
+            color: #64748b;
+
+            padding: 40px 20px;
+
+            background: #f8fafc;
+
+            border-radius: 12px;
+        }
+
+        .empty-message .empty-icon {
+            font-size: 45px;
+
+            margin-bottom: 12px;
+        }
+
+
+        /* ================= INFO BOX ================= */
+
+        .calorie-info {
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #fff7ed;
+
+            border-left: 5px solid #f97316;
+
+            border-radius: 10px;
+
+            color: #9a3412;
+
+            font-size: 13px;
+        }
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1100px) {
+
+            .stats-container {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                padding: 20px;
+            }
+
+            .main-content {
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+
+            .form-card,
+            .history-card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏋️ Smart Sports Coach
+    </div>
+
+
+    <a href="{{ url_for('dashboard') }}"
+       class="nav-link">
+
+        <span class="nav-icon">🏠</span>
+
+        Dashboard
+
+    </a>
+
+
+    <a href="{{ url_for('assessment') }}"
+       class="nav-link">
+
+        <span class="nav-icon">📝</span>
+
+        Assessment
+
+    </a>
+
+
+    <a href="{{ url_for('result') }}"
+       class="nav-link">
+
+        <span class="nav-icon">📊</span>
+
+        Health Analysis
+
+    </a>
+
+
+    <a href="{{ url_for('recommendations') }}"
+       class="nav-link">
+
+        <span class="nav-icon">💡</span>
+
+        Recommendations
+
+    </a>
+
+
+    <a href="{{ url_for('weekly_plan') }}"
+       class="nav-link">
+
+        <span class="nav-icon">📅</span>
+
+        Weekly Plan
+
+    </a>
+
+
+    <a href="{{ url_for('workout_tracker') }}"
+       class="nav-link active">
+
+        <span class="nav-icon">🏋️</span>
+
+        Workout Tracker
+
+    </a>
+
+
+    <a href="{{ url_for('nutrition') }}"
+       class="nav-link">
+
+        <span class="nav-icon">🥗</span>
+
+        Nutrition
+
+    </a>
+
+
+    <a href="{{ url_for('hydration') }}"
+       class="nav-link">
+
+        <span class="nav-icon">💧</span>
+
+        Hydration
+
+    </a>
+
+
+    <a href="{{ url_for('progress') }}"
+       class="nav-link">
+
+        <span class="nav-icon">📈</span>
+
+        My Progress
+
+    </a>
+
+
+    <a href="{{ url_for('exercise_videos') }}"
+       class="nav-link">
+
+        <span class="nav-icon">🎥</span>
+
+        Exercise Videos
+
+    </a>
+
+
+    <a href="{{ url_for('settings') }}"
+       class="nav-link">
+
+        <span class="nav-icon">⚙️</span>
+
+        Settings
+
+    </a>
+
+
+    <a href="{{ url_for('logout') }}"
+       class="nav-link">
+
+        <span class="nav-icon">🚪</span>
+
+        Logout
+
+    </a>
+
+</div>
+
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="main-content">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div>
+
+            <h1>
+                Daily Workout Tracker 🏋️
+            </h1>
+
+            <p>
+                Track your workouts, duration and estimated calories burned.
+            </p>
+
+        </div>
+
+
+        <a href="{{ url_for('dashboard') }}"
+           class="back-btn">
+
+            ← Dashboard
+
+        </a>
+
+    </div>
+
+
+
+    <!-- FLASH MESSAGES -->
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="flash-message">
+
+                    {{ message }}
+
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="stats-container">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🏋️
+            </div>
+
+            <h3>
+                Total Workouts
+            </h3>
+
+            <h2>
+                {{ total_workouts }}
+            </h2>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ✅
+            </div>
+
+            <h3>
+                Completed Workouts
+            </h3>
+
+            <h2>
+                {{ completed_workouts }}
+            </h2>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🔥
+            </div>
+
+            <h3>
+                Total Calories
+            </h3>
+
+            <h2>
+                {{ total_calories }}
+            </h2>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ⏱️
+            </div>
+
+            <h3>
+                Total Minutes
+            </h3>
+
+            <h2>
+                {{ total_minutes }}
+            </h2>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ================= ADD WORKOUT ================= -->
+
+    <div class="form-card">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    ➕ Add New Workout
+                </h2>
+
+                <p>
+                    Enter your workout details below.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <form method="POST"
+              action="{{ url_for('workout_tracker') }}">
+
+
+            <div class="form-grid">
+
+
+                <!-- WORKOUT NAME -->
+
+                <div class="form-group">
+
+                    <label for="workout_name">
+                        Workout Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="workout_name"
+                        name="workout_name"
+                        placeholder="Example: Morning Running"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- CATEGORY -->
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Workout Category
+                    </label>
+
+                    <select
+                        id="category"
+                        name="category"
+                        required
+                    >
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="Walking">
+                            🚶 Walking
+                        </option>
+
+                        <option value="Running">
+                            🏃 Running
+                        </option>
+
+                        <option value="Cardio">
+                            ❤️ Cardio
+                        </option>
+
+                        <option value="Strength">
+                            🏋️ Strength Training
+                        </option>
+
+                        <option value="Yoga">
+                            🧘 Yoga
+                        </option>
+
+                        <option value="Stretching">
+                            🤸 Stretching
+                        </option>
+
+                        <option value="Cycling">
+                            🚴 Cycling
+                        </option>
+
+                        <option value="Other">
+                            ⭐ Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- DURATION -->
+
+                <div class="form-group">
+
+                    <label for="duration">
+                        Duration in Minutes
+                    </label>
+
+                    <input
+                        type="number"
+                        id="duration"
+                        name="duration"
+                        placeholder="Example: 30"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- CALORIES -->
+
+                <div class="form-group">
+
+                    <label for="calories_burned">
+                        Estimated Calories Burned
+                    </label>
+
+                    <input
+                        type="number"
+                        id="calories_burned"
+                        name="calories_burned"
+                        placeholder="Calculated automatically"
+                        min="0"
+                        readonly
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- DATE -->
+
+                <div class="form-group">
+
+                    <label for="workout_date">
+                        Workout Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="workout_date"
+                        name="workout_date"
+                        required
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- COMPLETED -->
+
+            <div class="checkbox-group">
+
+                <input
+                    type="checkbox"
+                    id="completed"
+                    name="completed"
+                >
+
+                <label for="completed">
+
+                    Mark workout as completed
+
+                </label>
+
+            </div>
+
+
+
+            <!-- INFO -->
+
+            <div class="calorie-info">
+
+                🔥 <strong>Calories are estimated automatically</strong>
+                based on the selected workout category and duration.
+
+            </div>
+
+
+
+            <!-- SUBMIT -->
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+
+                💾 Save Workout
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================= HISTORY ================= -->
+
+    <div class="history-card">
+
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+                    📋 Workout History
+                </h2>
+
+                <p>
+                    View and manage your previous workouts.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        {% if workouts %}
+
+
+            <div class="table-wrapper">
+
+
+                <table class="workout-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Workout
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Minutes
+                            </th>
+
+                            <th>
+                                Calories
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                    {% for workout in workouts %}
+
+
+                        <tr>
+
+
+                            <td>
+
+                                <strong>
+                                    {{ workout.workout_name }}
+                                </strong>
+
+                            </td>
+
+
+
+                            <td>
+
+                                <span class="category-badge">
+
+                                    {{ workout.category }}
+
+                                </span>
+
+                            </td>
+
+
+
+                            <td>
+
+                                ⏱️ {{ workout.duration }}
+
+                            </td>
+
+
+
+                            <td>
+
+                                🔥 {{ workout.calories_burned }}
+
+                            </td>
+
+
+
+                            <td>
+
+                                📅 {{ workout.workout_date }}
+
+                            </td>
+
+
+
+                            <td>
+
+
+                                {% if workout.completed %}
+
+                                    <span class="completed">
+
+                                        ✓ Completed
+
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="not-completed">
+
+                                        ⏳ Pending
+
+                                    </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+
+                            <td>
+
+                                <a
+                                    href="{{ url_for(
+                                        'delete_workout',
+                                        workout_id=workout.id
+                                    ) }}"
+                                    class="delete-btn"
+
+                                    onclick="
+                                        return confirm(
+                                            'Are you sure you want to delete this workout?'
+                                        );
+                                    "
+                                >
+
+                                    🗑️ Delete
+
+                                </a>
+
+                            </td>
+
+
+                        </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        {% else %}
+
+
+            <div class="empty-message">
+
+                <div class="empty-icon">
+                    🏃
+                </div>
+
+                <strong>
+                    No workouts added yet.
+                </strong>
+
+                <p style="margin-top:8px;">
+                    Start by adding your first workout above!
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+    /* ================= CALORIE CALCULATION ================= */
+
+    const categoryInput =
+        document.getElementById("category");
+
+
+    const durationInput =
+        document.getElementById("duration");
+
+
+    const caloriesInput =
+        document.getElementById("calories_burned");
+
+
+    const caloriesPerMinute = {
+
+        "Walking": 4,
+
+        "Running": 12,
+
+        "Cardio": 10,
+
+        "Strength": 7,
+
+        "Yoga": 3,
+
+        "Stretching": 2,
+
+        "Cycling": 8,
+
+        "Other": 5
+
+    };
+
+
+    function calculateCalories() {
+
+
+        const category =
+            categoryInput.value;
+
+
+        const duration =
+            Number(durationInput.value);
+
+
+        const rate =
+            caloriesPerMinute[category] || 5;
+
+
+        if (
+            category !== "" &&
+            duration > 0
+        ) {
+
+
+            const calories =
+                Math.round(
+                    duration * rate
+                );
+
+
+            caloriesInput.value =
+                calories;
+
+
+        } else {
+
+
+            caloriesInput.value = "";
+
+
+        }
+
+    }
+
+
+    categoryInput.addEventListener(
+        "change",
+        calculateCalories
+    );
+
+
+    durationInput.addEventListener(
+        "input",
+        calculateCalories
+    );
+
+
+
+    /* ================= TODAY'S DATE ================= */
+
+    const dateInput =
+        document.getElementById(
+            "workout_date"
+        );
+
+
+    const today =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+    dateInput.value =
+        today;
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health Analysis | Smart Sports Coach</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1e3a8a, #4c1d95);
+            color: white;
+            padding: 25px 18px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            padding: 10px 12px 30px;
+        }
+
+        .logo span {
+            color: #c4b5fd;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cbd5e1;
+            padding: 15px 12px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            margin-bottom: 5px;
+            border-radius: 10px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 20px;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 35px;
+        }
+
+        .welcome h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .welcome p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* CONTENT */
+
+        .content {
+            padding: 30px 35px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .page-heading p {
+            color: #6b7280;
+            margin-top: 7px;
+        }
+
+        /* SCORE SECTION */
+
+        .analysis-top {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .score-panel {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 22px;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(37,99,235,0.2);
+        }
+
+        .score-panel h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .score-circle {
+            width: 170px;
+            height: 170px;
+            margin: 0 auto 20px;
+            border: 10px solid rgba(255,255,255,0.25);
+            border-top-color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        .score-label {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+
+        .score-description {
+            font-size: 14px;
+            line-height: 1.5;
+            opacity: 0.9;
+        }
+
+        /* SUMMARY */
+
+        .summary-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 22px;
+            padding: 28px;
+        }
+
+        .summary-panel h3 {
+            font-size: 20px;
+            margin-bottom: 18px;
+        }
+
+        .summary-box {
+            padding: 20px;
+            border-radius: 15px;
+            background: #f8fafc;
+            border-left: 5px solid #2563eb;
+        }
+
+        .summary-box h4 {
+            font-size: 17px;
+            margin-bottom: 8px;
+            color: #111827;
+        }
+
+        .summary-box p {
+            color: #6b7280;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* METRIC CARDS */
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 18px;
+            border: 1px solid #e5e7eb;
+            padding: 22px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .metric-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            margin-bottom: 15px;
+        }
+
+        .metric-card:nth-child(2) .metric-icon {
+            background: #ede9fe;
+        }
+
+        .metric-card:nth-child(3) .metric-icon {
+            background: #cffafe;
+        }
+
+        .metric-card:nth-child(4) .metric-icon {
+            background: #dcfce7;
+        }
+
+        .metric-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .metric-value {
+            font-size: 25px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .metric-unit {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .metric-status {
+            margin-top: 7px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        /* DETAILS */
+
+        .details-panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            padding: 28px;
+            margin-bottom: 22px;
+        }
+
+        .details-panel h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .detail-box span {
+            display: block;
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .detail-box strong {
+            font-size: 14px;
+            color: #111827;
+        }
+
+        /* ACTIONS */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 13px 22px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .primary {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+        }
+
+        .secondary {
+            background: white;
+            border: 1px solid #d1d5db;
+            color: #374151;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* MOBILE */
+
+        .mobile-menu {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1100px) {
+
+            .analysis-top {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .metrics-grid,
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Smart <span>Sports Coach</span>
+    </div>
+
+    <div class="nav-title">
+        Main
+    </div>
+
+    <a href="{{ url_for('dashboard') }}" class="nav-link">
+        <span class="nav-icon">🏠</span>
+        Dashboard
+    </a>
+
+    <a href="{{ url_for('assessment') }}" class="nav-link">
+        <span class="nav-icon">📋</span>
+        Health Assessment
+    </a>
+
+    <a href="{{ url_for('result') }}" class="nav-link active">
+        <span class="nav-icon">📊</span>
+        My Analysis
+    </a>
+
+    <a href="{{ url_for('recommendations') }}" class="nav-link">
+        <span class="nav-icon">💡</span>
+        Recommendations
+    </a>
+
+    <a href="{{ url_for('weekly_plan') }}" class="nav-link">
+        <span class="nav-icon">📅</span>
+        Weekly Plan
+    </a>
+
+    <div class="nav-title">
+        Wellness
+    </div>
+
+    <a href="{{ url_for('nutrition') }}" class="nav-link">
+        <span class="nav-icon">🥗</span>
+        Nutrition
+    </a>
+
+    <a href="{{ url_for('hydration') }}" class="nav-link">
+        <span class="nav-icon">💧</span>
+        Hydration
+    </a>
+
+    <a href="{{ url_for('progress') }}" class="nav-link">
+        <span class="nav-icon">📈</span>
+        My Progress
+    </a>
+
+    <a href="{{ url_for('exercise_videos') }}" class="nav-link">
+        <span class="nav-icon">🎥</span>
+        Exercise Guide
+    </a>
+
+    <div class="nav-title">
+        Account
+    </div>
+
+    <a href="{{ url_for('settings') }}" class="nav-link">
+        <span class="nav-icon">⚙️</span>
+        Settings
+    </a>
+
+    <div class="logout">
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            <span class="nav-icon">🚪</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div style="display:flex;align-items:center;gap:15px;">
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+            <div class="welcome">
+
+                <h2>
+                    My Health Analysis
+                </h2>
+
+                <p>
+                    Your personalized health assessment results.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ user.name[0]|upper }}
+            </div>
+
+            <div class="profile-name">
+                {{ user.name }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+        {% if assessment %}
+
+            <!-- PAGE HEADING -->
+
+            <div class="page-heading">
+
+                <h1>
+                    Your Health Analysis 📊
+                </h1>
+
+                <p>
+                    Here's what your lifestyle assessment tells us.
+                </p>
+
+            </div>
+
+
+            <!-- SCORE + SUMMARY -->
+
+            <div class="analysis-top">
+
+                <div class="score-panel">
+
+                    <h3>
+                        Overall Health Score
+                    </h3>
+
+                    <div class="score-circle">
+
+                        <div>
+
+                            <div class="score-number">
+                                {{ assessment.health_score|round|int }}
+                            </div>
+
+                            <div class="score-label">
+                                out of 100
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <p class="score-description">
+
+                        Your score is based on your BMI,
+                        physical activity, hydration and sleep.
+
+                    </p>
+
+                </div>
+
+
+                <div class="summary-panel">
+
+                    <h3>
+                        Assessment Summary
+                    </h3>
+
+                    <div class="summary-box">
+
+                        <h4>
+                            Your current health profile
+                        </h4>
+
+                        <p>
+                            Based on your assessment, your BMI is
+                            <strong>{{ assessment.bmi|round(1) }}</strong>
+                            and your current activity level is
+                            <strong>{{ assessment.activity_level }}</strong>.
+                            Your selected fitness goal is
+                            <strong>{{ assessment.fitness_goal }}</strong>.
+                        </p>
+
+                    </div>
+
+                    <br>
+
+                    <div class="summary-box">
+
+                        <h4>
+                            Recommended focus
+                        </h4>
+
+                        <p>
+                            Focus on maintaining consistent physical
+                            activity, sufficient hydration, balanced
+                            nutrition and healthy sleep habits.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- METRICS -->
+
+            <div class="metrics-grid">
+
+                <!-- BMI -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        ⚖️
+                    </div>
+
+                    <div class="metric-label">
+                        Body Mass Index
+                    </div>
+
+                    <div class="metric-value">
+                        {{ assessment.bmi|round(1) }}
+                    </div>
+
+                    <div class="metric-status">
+                        {{ assessment.bmi_category }}
+                    </div>
+
+                </div>
+
+
+                <!-- WATER -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        💧
+                    </div>
+
+                    <div class="metric-label">
+                        Recommended Water
+                    </div>
+
+                    <div class="metric-value">
+                        {{ assessment.recommended_water|round(2) }}
+                        <span class="metric-unit">L/day</span>
+                    </div>
+
+                    <div class="metric-status">
+                        Daily hydration target
+                    </div>
+
+                </div>
+
+
+                <!-- SLEEP -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        😴
+                    </div>
+
+                    <div class="metric-label">
+                        Sleep Duration
+                    </div>
+
+                    <div class="metric-value">
+                        {{ assessment.sleep_duration|round(1) }}
+                        <span class="metric-unit">hours</span>
+                    </div>
+
+                    <div class="metric-status">
+                        Daily average
+                    </div>
+
+                </div>
+
+
+                <!-- WATER INTAKE -->
+
+                <div class="metric-card">
+
+                    <div class="metric-icon">
+                        🥤
+                    </div>
+
+                    <div class="metric-label">
+                        Current Water Intake
+                    </div>
+
+                    <div class="metric-value">
+                        {{ assessment.water_intake|round(1) }}
+                        <span class="metric-unit">L/day</span>
+                    </div>
+
+                    <div class="metric-status">
+                        Current intake
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PERSONAL DETAILS -->
+
+            <div class="details-panel">
+
+                <h3>
+                    Your Assessment Details
+                </h3>
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+
+                        <span>
+                            Age
+                        </span>
+
+                        <strong>
+                            {{ assessment.age }} years
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span>
+                            Gender
+                        </span>
+
+                        <strong>
+                            {{ assessment.gender }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span>
+                            Height
+                        </span>
+
+                        <strong>
+                            {{ assessment.height|round(1) }} cm
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span>
+                            Weight
+                        </span>
+
+                        <strong>
+                            {{ assessment.weight|round(1) }} kg
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span>
+                            Activity Level
+                        </span>
+
+                        <strong>
+                            {{ assessment.activity_level }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <span>
+                            Fitness Goal
+                        </span>
+
+                        <strong>
+                            {{ assessment.fitness_goal }}
+                        </strong>
+
+                    </div>
+
+
+                    {% if assessment.eating_habits %}
+
+                    <div class="detail-box">
+
+                        <span>
+                            Eating Habits
+                        </span>
+
+                        <strong>
+                            {{ assessment.eating_habits }}
+                        </strong>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if assessment.preferred_sports_environment %}
+
+                    <div class="detail-box">
+
+                        <span>
+                            Sports Environment
+                        </span>
+
+                        <strong>
+                            {{ assessment.preferred_sports_environment }}
+                        </strong>
+
+                    </div>
+
+                    {% endif %}
+
+
+                    {% if assessment.available_exercise_time %}
+
+                    <div class="detail-box">
+
+                        <span>
+                            Exercise Time
+                        </span>
+
+                        <strong>
+                            {{ assessment.available_exercise_time }}
+                        </strong>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+                <a
+                    href="{{ url_for('recommendations') }}"
+                    class="action-btn primary"
+                >
+                    View My Recommendations →
+                </a>
+
+                <a
+                    href="{{ url_for('weekly_plan') }}"
+                    class="action-btn primary"
+                >
+                    View Weekly Plan 📅
+                </a>
+
+                <a
+                    href="{{ url_for('hydration') }}"
+                    class="action-btn secondary"
+                >
+                    Check Hydration 💧
+                </a>
+
+                <a
+                    href="{{ url_for('progress') }}"
+                    class="action-btn secondary"
+                >
+                    View Progress 📈
+                </a>
+
+            </div>
+
+
+        {% else %}
+
+            <!-- NO ASSESSMENT -->
+
+            <div class="summary-panel" style="text-align:center;padding:60px 30px;">
+
+                <div style="font-size:60px;margin-bottom:20px;">
+                    📋
+                </div>
+
+                <h2 style="margin-bottom:12px;">
+                    No Health Assessment Found
+                </h2>
+
+                <p style="color:#6b7280;margin-bottom:25px;">
+                    Complete your health assessment to generate
+                    your personalized analysis.
+                </p>
+
+                <a
+                    href="{{ url_for('assessment') }}"
+                    class="action-btn primary"
+                >
+                    Start Assessment →
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+
+<script>
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("show");
+
+    }
+
+</script>
+
+</body>
+</html>

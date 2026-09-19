@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Settings | Smart Sports Coach</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: linear-gradient(
+                180deg,
+                #334155,
+                #1e293b
+            );
+
+            color: white;
+
+            padding: 25px 18px;
+
+            overflow-y: auto;
+
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            padding: 10px 12px 30px;
+        }
+
+        .logo span {
+            color: #cbd5e1;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cbd5e1;
+            padding: 15px 12px 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px;
+            margin-bottom: 5px;
+
+            border-radius: 10px;
+
+            color: #e2e8f0;
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+        }
+
+        .nav-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 20px;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            padding-top: 20px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* ================= TOPBAR ================= */
+
+        .topbar {
+            height: 75px;
+
+            background: white;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 0 35px;
+        }
+
+        .welcome h2 {
+            font-size: 21px;
+            color: #111827;
+        }
+
+        .welcome p {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #475569,
+                    #1e293b
+                );
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: bold;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            padding: 30px 35px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .page-heading p {
+            color: #6b7280;
+            margin-top: 7px;
+        }
+
+        /* ================= PROFILE CARD ================= */
+
+        .profile-card {
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 20px;
+
+            padding: 27px;
+
+            margin-bottom: 22px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+
+            padding-bottom: 22px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            margin-bottom: 22px;
+        }
+
+        .large-avatar {
+            width: 72px;
+            height: 72px;
+
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #475569,
+                    #1e293b
+                );
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .profile-header h2 {
+            font-size: 21px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .profile-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* ================= DETAILS ================= */
+
+        .details-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .detail-box {
+            background: #f8fafc;
+
+            border-radius: 13px;
+
+            padding: 17px;
+        }
+
+        .detail-label {
+            font-size: 11px;
+
+            color: #64748b;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+
+            font-weight: bold;
+
+            color: #111827;
+
+            word-break: break-word;
+        }
+
+        /* ================= HEALTH PROFILE ================= */
+
+        .health-card {
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 20px;
+
+            padding: 27px;
+
+            margin-bottom: 22px;
+        }
+
+        .card-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+        .card-title-icon {
+            width: 43px;
+            height: 43px;
+
+            border-radius: 12px;
+
+            background: #e2e8f0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 21px;
+        }
+
+        .card-title h2 {
+            font-size: 19px;
+            color: #111827;
+        }
+
+        .card-title p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        .health-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .health-item {
+            padding: 17px;
+
+            border-radius: 13px;
+
+            background: #f8fafc;
+
+            border:
+                1px solid #eef2f7;
+        }
+
+        .health-item-icon {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .health-item-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .health-item-value {
+            font-size: 15px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        /* ================= QUICK SETTINGS ================= */
+
+        .settings-card {
+            background: white;
+
+            border:
+                1px solid #e5e7eb;
+
+            border-radius: 20px;
+
+            padding: 27px;
+
+            margin-bottom: 22px;
+        }
+
+        .setting-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 17px 0;
+
+            border-bottom:
+                1px solid #f1f5f9;
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h3 {
+            font-size: 14px;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .setting-info p {
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .status {
+            padding: 7px 13px;
+
+            border-radius: 20px;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        /* ================= NOTIFICATION SETTINGS ================= */
+
+        .notification-form {
+            margin-top: 5px;
+        }
+
+        .notification-option {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 18px 0;
+
+            border-bottom:
+                1px solid #f1f5f9;
+        }
+
+        .notification-option:last-of-type {
+            border-bottom: none;
+        }
+
+        .notification-info h3 {
+            font-size: 14px;
+
+            color: #111827;
+
+            margin-bottom: 5px;
+        }
+
+        .notification-info p {
+            font-size: 12px;
+
+            color: #6b7280;
+
+            line-height: 1.5;
+        }
+
+        /* Toggle switch */
+
+        .switch {
+            position: relative;
+
+            width: 48px;
+            height: 26px;
+
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+
+            cursor: pointer;
+
+            inset: 0;
+
+            background: #cbd5e1;
+
+            border-radius: 30px;
+
+            transition: 0.3s;
+        }
+
+        .slider:before {
+            content: "";
+
+            position: absolute;
+
+            width: 20px;
+            height: 20px;
+
+            left: 3px;
+            top: 3px;
+
+            background: white;
+
+            border-radius: 50%;
+
+            transition: 0.3s;
+        }
+
+        .switch input:checked + .slider {
+            background: #334155;
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* Reminder time */
+
+        .reminder-time {
+            margin-top: 20px;
+
+            padding: 18px;
+
+            background: #f8fafc;
+
+            border-radius: 13px;
+        }
+
+        .reminder-time label {
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            color: #111827;
+
+            margin-bottom: 8px;
+        }
+
+        .reminder-time input {
+            padding: 10px 12px;
+
+            border:
+                1px solid #d1d5db;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+
+            background: white;
+        }
+
+        /* Save notification button */
+
+        .save-notification-btn {
+            margin-top: 20px;
+
+            padding: 12px 20px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #334155,
+                    #1e293b
+                );
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .save-notification-btn:hover {
+            transform: translateY(-2px);
+
+            opacity: 0.9;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .actions {
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            padding: 13px 21px;
+
+            border-radius: 11px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .primary {
+            background:
+                linear-gradient(
+                    135deg,
+                    #334155,
+                    #1e293b
+                );
+
+            color: white;
+        }
+
+        .secondary {
+            background: white;
+
+            border:
+                1px solid #d1d5db;
+
+            color: #374151;
+        }
+
+        .danger {
+            background: #fee2e2;
+
+            border:
+                1px solid #fecaca;
+
+            color: #b91c1c;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ================= NOTICE ================= */
+
+        .notice {
+            background: #eff6ff;
+
+            border:
+                1px solid #bfdbfe;
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            margin-top: 22px;
+        }
+
+        .notice h3 {
+            font-size: 15px;
+
+            color: #1d4ed8;
+
+            margin-bottom: 7px;
+        }
+
+        .notice p {
+            font-size: 12px;
+
+            color: #475569;
+
+            line-height: 1.6;
+        }
+
+        /* ================= MOBILE ================= */
+
+        .mobile-menu {
+            display: none;
+
+            border: none;
+
+            background: transparent;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+        @media (max-width: 1000px) {
+
+            .health-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .details-grid,
+            .health-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-name {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 25px;
+            }
+
+            .profile-header {
+                align-items: flex-start;
+            }
+
+            .setting-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .notification-option {
+                align-items: flex-start;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+        Smart <span>Sports Coach</span>
+    </div>
+
+
+    <div class="nav-title">
+        Main
+    </div>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🏠</span>
+        Dashboard
+    </a>
+
+
+    <a
+        href="{{ url_for('assessment') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📋</span>
+        Health Assessment
+    </a>
+
+
+    <a
+        href="{{ url_for('result') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📊</span>
+        My Analysis
+    </a>
+
+
+    <a
+        href="{{ url_for('recommendations') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">💡</span>
+        Recommendations
+    </a>
+
+
+    <a
+        href="{{ url_for('weekly_plan') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📅</span>
+        Weekly Plan
+    </a>
+
+
+    <div class="nav-title">
+        Wellness
+    </div>
+
+
+    <a
+        href="{{ url_for('nutrition') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🥗</span>
+        Nutrition
+    </a>
+
+
+    <a
+        href="{{ url_for('hydration') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">💧</span>
+        Hydration
+    </a>
+
+
+    <a
+        href="{{ url_for('progress') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">📈</span>
+        My Progress
+    </a>
+
+
+    <a
+        href="{{ url_for('exercise_videos') }}"
+        class="nav-link"
+    >
+        <span class="nav-icon">🎥</span>
+        Exercise Guide
+    </a>
+
+
+    <div class="nav-title">
+        Account
+    </div>
+
+
+    <a
+        href="{{ url_for('settings') }}"
+        class="nav-link active"
+    >
+        <span class="nav-icon">⚙️</span>
+        Settings
+    </a>
+
+
+    <div class="logout">
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="nav-link"
+        >
+            <span class="nav-icon">🚪</span>
+            Logout
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <div
+            style="
+                display:flex;
+                align-items:center;
+                gap:15px;
+            "
+        >
+
+            <button
+                class="mobile-menu"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+
+            <div class="welcome">
+
+                <h2>
+                    Account Settings
+                </h2>
+
+                <p>
+                    View your profile and health information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar">
+                {{ user.name[0]|upper }}
+            </div>
+
+            <div class="profile-name">
+                {{ user.name }}
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= CONTENT ================= -->
+
+    <div class="content">
+
+
+        <!-- HEADING -->
+
+        <div class="page-heading">
+
+            <h1>
+                Settings ⚙️
+            </h1>
+
+            <p>
+                Manage your account information and review your
+                current health profile.
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= PROFILE ================= -->
+
+        <div class="profile-card">
+
+            <div class="profile-header">
+
+                <div class="large-avatar">
+                    {{ user.name[0]|upper }}
+                </div>
+
+                <div>
+
+                    <h2>
+                        {{ user.name }}
+                    </h2>
+
+                    <p>
+                        Smart Sports Coach Member
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="details-grid">
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Full Name
+                    </div>
+
+                    <div class="detail-value">
+                        {{ user.name }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Email Address
+                    </div>
+
+                    <div class="detail-value">
+                        {{ user.email }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Account ID
+                    </div>
+
+                    <div class="detail-value">
+                        #{{ user.id }}
+                    </div>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <div class="detail-label">
+                        Account Status
+                    </div>
+
+                    <div class="detail-value">
+                        Active
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        {% if assessment %}
+
+
+        <!-- ================= HEALTH PROFILE ================= -->
+
+        <div class="health-card">
+
+            <div class="card-title">
+
+                <div class="card-title-icon">
+                    ❤️
+                </div>
+
+                <div>
+
+                    <h2>
+                        Current Health Profile
+                    </h2>
+
+                    <p>
+                        Information from your latest assessment.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="health-grid">
+
+
+                <div class="health-item">
+
+                    <div class="health-item-icon">
+                        🎯
+                    </div>
+
+                    <div class="health-item-label">
+                        Fitness Goal
+                    </div>
+
+                    <div class="health-item-value">
+                        {{ assessment.fitness_goal }}
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-item-icon">
+                        🏃
+                    </div>
+
+                    <div class="health-item-label">
+                        Activity Level
+                    </div>
+
+                    <div class="health-item-value">
+                        {{ assessment.activity_level }}
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-item-icon">
+                        ⚖️
+                    </div>
+
+                    <div class="health-item-label">
+                        BMI
+                    </div>
+
+                    <div class="health-item-value">
+                        {{ assessment.bmi|round(1) }}
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-item-icon">
+                        ❤️
+                    </div>
+
+                    <div class="health-item-label">
+                        Health Score
+                    </div>
+
+                    <div class="health-item-value">
+                        {{ assessment.health_score|round|int }}/100
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-item-icon">
+                        💧
+                    </div>
+
+                    <div class="health-item-label">
+                        Water Target
+                    </div>
+
+                    <div class="health-item-value">
+                        {{ assessment.recommended_water }} L
+                    </div>
+
+                </div>
+
+
+                <div class="health-item">
+
+                    <div class="health-item-icon">
+                        😴
+                    </div>
+
+                    <div class="health-item-label">
+                        Sleep
+                    </div>
+
+                    <div class="health-item-value">
+                        {{ assessment.sleep_duration }} hrs
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= QUICK SETTINGS ================= -->
+
+        <div class="settings-card">
+
+            <div class="card-title">
+
+                <div class="card-title-icon">
+                    🔧
+                </div>
+
+                <div>
+
+                    <h2>
+                        Account Overview
+                    </h2>
+
+                    <p>
+                        Current account and assessment status.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <h3>
+                        Health Assessment
+                    </h3>
+
+                    <p>
+                        Your latest health assessment is available
+                        and being used for recommendations.
+                    </p>
+
+                </div>
+
+                <div class="status">
+                    Completed
+                </div>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <h3>
+                        Personalized Recommendations
+                    </h3>
+
+                    <p>
+                        Your fitness information is used to generate
+                        personalized sports and wellness guidance.
+                    </p>
+
+                </div>
+
+                <div class="status">
+                    Active
+                </div>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <h3>
+                        Progress Tracking
+                    </h3>
+
+                    <p>
+                        Your assessment history can be viewed from
+                        the My Progress section.
+                    </p>
+
+                </div>
+
+                <div class="status">
+                    Enabled
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        {% else %}
+
+
+        <!-- NO ASSESSMENT -->
+
+        <div class="settings-card">
+
+            <div
+                style="
+                    text-align:center;
+                    padding:30px;
+                "
+            >
+
+                <div
+                    style="
+                        font-size:50px;
+                        margin-bottom:15px;
+                    "
+                >
+                    📋
+                </div>
+
+                <h2 style="margin-bottom:10px;">
+                    Health Assessment Not Completed
+                </h2>
+
+                <p
+                    style="
+                        color:#6b7280;
+                        font-size:13px;
+                        margin-bottom:20px;
+                    "
+                >
+                    Complete your health assessment to activate
+                    personalized health and fitness features.
+                </p>
+
+                <a
+                    href="{{ url_for('assessment') }}"
+                    class="action-btn primary"
+                >
+                    Start Assessment →
+                </a>
+
+            </div>
+
+        </div>
+
+
+        {% endif %}
+
+
+
+        <!-- ================= NOTIFICATION SETTINGS ================= -->
+
+        <div class="settings-card">
+
+            <div class="card-title">
+
+                <div class="card-title-icon">
+                    🔔
+                </div>
+
+                <div>
+
+                    <h2>
+                        Notification Preferences
+                    </h2>
+
+                    <p>
+                        Choose which health reminders you want to receive.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('settings') }}"
+                class="notification-form"
+            >
+
+
+                <!-- WORKOUT REMINDER -->
+
+                <div class="notification-option">
+
+                    <div class="notification-info">
+
+                        <h3>
+                            🏃 Workout Reminder
+                        </h3>
+
+                        <p>
+                            Receive reminders to complete your daily workout.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            name="workout_reminder"
+                            {% if notification_settings.workout_reminder %}
+                            checked
+                            {% endif %}
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- WATER REMINDER -->
+
+                <div class="notification-option">
+
+                    <div class="notification-info">
+
+                        <h3>
+                            💧 Water Reminder
+                        </h3>
+
+                        <p>
+                            Receive reminders to drink enough water during the day.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            name="water_reminder"
+                            {% if notification_settings.water_reminder %}
+                            checked
+                            {% endif %}
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- SLEEP REMINDER -->
+
+                <div class="notification-option">
+
+                    <div class="notification-info">
+
+                        <h3>
+                            😴 Sleep Reminder
+                        </h3>
+
+                        <p>
+                            Receive reminders to maintain a healthy sleep schedule.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            name="sleep_reminder"
+                            {% if notification_settings.sleep_reminder %}
+                            checked
+                            {% endif %}
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- EMAIL NOTIFICATION -->
+
+                <div class="notification-option">
+
+                    <div class="notification-info">
+
+                        <h3>
+                            📧 Email Notifications
+                        </h3>
+
+                        <p>
+                            Allow Smart Sports Coach to send health reminders by email.
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            name="email_notification"
+                            {% if notification_settings.email_notification %}
+                            checked
+                            {% endif %}
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- REMINDER TIME -->
+
+                <div class="reminder-time">
+
+                    <label for="reminder_time">
+                        ⏰ Daily Reminder Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="reminder_time"
+                        name="reminder_time"
+                        value="{{ notification_settings.reminder_time }}"
+                    >
+
+                </div>
+
+
+                <!-- SAVE BUTTON -->
+
+                <button
+                    type="submit"
+                    class="save-notification-btn"
+                >
+                    💾 Save Notification Settings
+                </button>
+
+
+            </form>
+
+        </div>
+
+
+
+        <!-- ================= NOTICE ================= -->
+
+        <div class="notice">
+
+            <h3>
+                🔒 Your Information
+            </h3>
+
+            <p>
+                Your profile and assessment information is used
+                within the Smart Sports Coach application to
+                provide personalized analysis, recommendations,
+                hydration guidance, nutrition guidance and progress
+                tracking.
+            </p>
+
+        </div>
+
+
+
+        <!-- ================= ACTIONS ================= -->
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('assessment') }}"
+                class="action-btn primary"
+            >
+                📋 Update Assessment
+            </a>
+
+
+            <a
+                href="{{ url_for('progress') }}"
+                class="action-btn secondary"
+            >
+                📈 View Progress
+            </a>
+
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="action-btn secondary"
+            >
+                🏠 Dashboard
+            </a>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="action-btn danger"
+            >
+                🚪 Logout
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+    function toggleSidebar() {
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        sidebar.classList.toggle("show");
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nutrition Planner - Smart Sports Coach</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .main {
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header {
+            background: linear-gradient(
+                135deg,
+                #16a34a,
+                #22c55e
+            );
+
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            line-height: 1.6;
+        }
+
+        .goal-card {
+            background: white;
+            padding: 22px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+        }
+
+        .goal-card h2 {
+            margin-bottom: 10px;
+        }
+
+        .goal {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .focus {
+            margin-top: 15px;
+            line-height: 1.7;
+            color: #4b5563;
+        }
+
+        .meal-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 20px;
+        }
+
+        .meal-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+            border-left: 6px solid #22c55e;
+        }
+
+        .meal-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        .meal-card h2 {
+            margin-bottom: 15px;
+        }
+
+        .meal-card ul {
+            padding-left: 20px;
+        }
+
+        .meal-card li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .tip {
+            margin-top: 25px;
+            background: #eff6ff;
+            padding: 22px;
+            border-radius: 16px;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            background: #111827;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 750px) {
+
+            .main {
+                padding: 20px;
+            }
+
+            .meal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<main class="main">
+
+    <section class="header">
+
+        <h1>
+            🥗 Daily Nutrition Planner
+        </h1>
+
+        <p>
+            Hello {{ user.name }}!
+            Here is your personalized daily nutrition plan.
+        </p>
+
+    </section>
+
+
+    <section class="goal-card">
+
+        <h2>
+            🎯 Your Fitness Goal
+        </h2>
+
+        <span class="goal">
+            {{ fitness_goal }}
+        </span>
+
+        <p class="focus">
+            <strong>Nutrition Focus:</strong>
+            {{ nutrition_focus }}
+        </p>
+
+    </section>
+
+
+    <section class="meal-grid">
+
+
+        <!-- BREAKFAST -->
+
+        <div class="meal-card">
+
+            <div class="meal-icon">
+                🌅
+            </div>
+
+            <h2>
+                Breakfast
+            </h2>
+
+            <ul>
+
+                {% for food in nutrition_plan.breakfast %}
+
+                    <li>
+                        {{ food }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+
+        <!-- LUNCH -->
+
+        <div class="meal-card">
+
+            <div class="meal-icon">
+                🍛
+            </div>
+
+            <h2>
+                Lunch
+            </h2>
+
+            <ul>
+
+                {% for food in nutrition_plan.lunch %}
+
+                    <li>
+                        {{ food }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+
+        <!-- SNACKS -->
+
+        <div class="meal-card">
+
+            <div class="meal-icon">
+                🍎
+            </div>
+
+            <h2>
+                Snacks
+            </h2>
+
+            <ul>
+
+                {% for food in nutrition_plan.snacks %}
+
+                    <li>
+                        {{ food }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+
+        <!-- DINNER -->
+
+        <div class="meal-card">
+
+            <div class="meal-icon">
+                🌙
+            </div>
+
+            <h2>
+                Dinner
+            </h2>
+
+            <ul>
+
+                {% for food in nutrition_plan.dinner %}
+
+                    <li>
+                        {{ food }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        </div>
+
+    </section>
+
+
+    <div class="tip">
+
+        <strong>
+            💡 Daily Tip
+        </strong>
+
+        <p style="margin-top:8px;">
+            Keep your meals balanced and drink water
+            regularly throughout the day.
+        </p>
+
+    </div>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="back"
+    >
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+</body>
+
+</html>
