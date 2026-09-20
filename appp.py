@@ -633,10 +633,12 @@ def generate_recommendations(assessment):
 # =========================================================
 # EMAIL FUNCTIONS
 # =========================================================
-
 def send_assessment_email(user, assessment):
 
     try:
+
+        import requests
+        import os
 
         subject = (
             "Smart Sports Coach - Health Assessment Result"
@@ -675,18 +677,44 @@ Regards,
 Smart Sports Coach Team
 """
 
-        message = Message(
-            subject=subject,
-            recipients=[user.email],
-            body=body
+        api_key = os.environ.get("RESEND_API_KEY")
+
+        if not api_key:
+            print("Assessment email error: RESEND_API_KEY is not configured.")
+            return
+
+        response = requests.post(
+            "https://api.resend.com/emails",
+
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            },
+
+            json={
+                "from": "Smart Sports Coach <onboarding@resend.dev>",
+                "to": [user.email],
+                "subject": subject,
+                "text": body
+            },
+
+            timeout=10
         )
 
-        mail.send(message)
+        if response.status_code in (200, 201):
 
-        print(
-            "Assessment email sent to:",
-            user.email
-        )
+            print(
+                "Assessment email sent to:",
+                user.email
+            )
+
+        else:
+
+            print(
+                "Assessment email error:",
+                response.status_code,
+                response.text
+            )
 
     except Exception as error:
 
@@ -694,8 +722,6 @@ Smart Sports Coach Team
             "Assessment email error:",
             error
         )
-
-
 # =========================================================
 # BACKGROUND ASSESSMENT EMAIL
 # =========================================================
