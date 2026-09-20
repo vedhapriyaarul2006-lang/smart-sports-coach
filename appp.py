@@ -25,6 +25,8 @@ from zoneinfo import ZoneInfo
 
 import os
 
+import threading
+
 
 # =========================================================
 # APP CONFIGURATION
@@ -49,12 +51,13 @@ app.config["MAIL_PORT"] = 587
 
 app.config["MAIL_USE_TLS"] = True
 
-app.config["MAIL_USERNAME"] = "smartsportscoach110@gmail.com"
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
 
-app.config["MAIL_PASSWORD"] = "tlwt jqhy fefy yfkt"
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
 
-app.config["MAIL_DEFAULT_SENDER"] = "smartsportscoach110@gmail.com"
-
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get(
+    "MAIL_DEFAULT_SENDER"
+) or app.config["MAIL_USERNAME"]
 
 db = SQLAlchemy(app)
 
@@ -627,7 +630,6 @@ def generate_recommendations(assessment):
 
     return recommendations
 
-
 # =========================================================
 # EMAIL FUNCTIONS
 # =========================================================
@@ -693,13 +695,40 @@ Smart Sports Coach Team
             error
         )
 
-def send_notification_email(user, notification_settings):
+
+# =========================================================
+# BACKGROUND ASSESSMENT EMAIL
+# =========================================================
+def send_assessment_email_background(user_id, assessment_id):
+    try:
+        with app.app_context():
+
+            # Load fresh database objects inside this background thread
+            user = User.query.get(user_id)
+            assessment = HealthAssessment.query.get(assessment_id)
+
+            if not user or not assessment:
+                print("Background email error: User or assessment not found.")
+                return
+
+            send_assessment_email(user, assessment)
+
+    except Exception as error:
+        print("Background assessment email error:", error)
+
+
+def send_notification_email(
+    user,
+    notification_settings
+):
 
     try:
 
         assessment = (
             HealthAssessment.query
-            .filter_by(user_id=user.id)
+            .filter_by(
+                user_id=user.id
+            )
             .order_by(
                 HealthAssessment.created_at.desc()
             )
@@ -723,7 +752,10 @@ def send_notification_email(user, notification_settings):
                 "Drink enough water throughout the day."
             )
 
-            if assessment and assessment.recommended_water:
+            if (
+                assessment
+                and assessment.recommended_water
+            ):
 
                 water_text = (
                     f"Try to drink about "
@@ -745,6 +777,7 @@ def send_notification_email(user, notification_settings):
 
         # If no reminders are selected
         if not reminder_items:
+
             return False
 
         body = f"""Hello {user.name},
@@ -786,6 +819,7 @@ Smart Sports Coach Team
         )
 
         return False
+    
 
 # =========================================================
 # HOME
@@ -1308,15 +1342,17 @@ def assessment():
 
         db.session.commit()
 
-        # Send email after assessment
-        send_assessment_email(
-            user,
-            new_assessment
+        # Send assessment email in the background
+        email_thread = threading.Thread(
+           target=send_assessment_email_background,
+           args=(user.id, new_assessment.id),
+           daemon=True
         )
+        email_thread.start()
+
 
         flash(
-            "Assessment completed successfully! "
-            "Your result was sent to your email.",
+            "Assessment completed successfully!",
             "success"
         )
 
@@ -1878,9 +1914,9 @@ def progress():
             # Check whether workout belongs to this week
             if week_start <= workout_date <= today:
 
-               day_name = workout_date.strftime("%A")
+                day_name = workout_date.strftime("%A")
 
-            weekly_workout_minutes[day_name] += (
+                weekly_workout_minutes[day_name] += (
                   workout.duration or 0
             )
 
