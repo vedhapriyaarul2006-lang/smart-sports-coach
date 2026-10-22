@@ -19,11 +19,13 @@ from flask_mail import Mail, Message
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta,  timezone
 
 from zoneinfo import ZoneInfo
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 import threading
 
@@ -633,12 +635,15 @@ def generate_recommendations(assessment):
 # =========================================================
 # EMAIL FUNCTIONS
 # =========================================================
+
 def send_assessment_email(user, assessment):
 
     try:
 
-        import requests
         import os
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
 
         subject = (
             "Smart Sports Coach - Health Assessment Result"
@@ -677,44 +682,68 @@ Regards,
 Smart Sports Coach Team
 """
 
-        api_key = os.environ.get("RESEND_API_KEY")
+        # Gmail account
+        sender_email = os.environ.get("GMAIL_EMAIL")
 
-        if not api_key:
-            print("Assessment email error: RESEND_API_KEY is not configured.")
-            return
-
-        response = requests.post(
-            "https://api.resend.com/emails",
-
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json"
-            },
-
-            json={
-                "from": "Smart Sports Coach <onboarding@resend.dev>",
-                "to": [user.email],
-                "subject": subject,
-                "text": body
-            },
-
-            timeout=10
+        # Gmail App Password
+        sender_password = os.environ.get(
+            "GMAIL_APP_PASSWORD"
         )
 
-        if response.status_code in (200, 201):
+        # Gmail SMTP server
+        smtp_server = os.environ.get(
+            "GMAIL_SMTP_SERVER",
+            "smtp.gmail.com"
+        )
 
+        if not sender_email:
             print(
-                "Assessment email sent to:",
-                user.email
+                "Assessment email error: "
+                "GMAIL_EMAIL is not configured."
+            )
+            return
+
+        if not sender_password:
+            print(
+                "Assessment email error: "
+                "GMAIL_APP_PASSWORD is not configured."
+            )
+            return
+
+        # Create email
+        message = MIMEMultipart()
+
+        message["From"] = sender_email
+        message["To"] = user.email
+        message["Subject"] = subject
+
+        message.attach(
+            MIMEText(body, "plain")
+        )
+
+        # Connect to Gmail SMTP
+        with smtplib.SMTP(
+            smtp_server,
+            587
+        ) as server:
+
+            server.starttls()
+
+            server.login(
+                sender_email,
+                sender_password
             )
 
-        else:
-
-            print(
-                "Assessment email error:",
-                response.status_code,
-                response.text
+            server.sendmail(
+                sender_email,
+                user.email,
+                message.as_string()
             )
+
+        print(
+            "Assessment email sent to:",
+            user.email
+        )
 
     except Exception as error:
 
@@ -741,8 +770,6 @@ def send_assessment_email_background(user_id, assessment_id):
 
     except Exception as error:
         print("Background assessment email error:", error)
-
-
 def send_notification_email(
     user,
     notification_settings
@@ -750,6 +777,13 @@ def send_notification_email(
 
     try:
 
+        import os
+        import smtplib
+
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+
+        # Get latest assessment
         assessment = (
             HealthAssessment.query
             .filter_by(
@@ -761,6 +795,7 @@ def send_notification_email(
             .first()
         )
 
+        # Store reminders
         reminder_items = []
 
         # Workout reminder
@@ -801,11 +836,12 @@ def send_notification_email(
                 "Aim for 7 to 9 hours of quality sleep tonight."
             )
 
-        # If no reminders are selected
+        # No reminders selected
         if not reminder_items:
 
             return False
 
+        # Email body
         body = f"""Hello {user.name},
 
 This is your personalized health reminder from Smart Sports Coach.
@@ -822,13 +858,78 @@ Regards,
 Smart Sports Coach Team
 """
 
-        message = Message(
-            subject="Smart Sports Coach - Health Reminder",
-            recipients=[user.email],
-            body=body
+        # Gmail account
+        sender_email = os.environ.get(
+            "GMAIL_EMAIL"
         )
 
-        mail.send(message)
+        # Gmail App Password
+        sender_password = os.environ.get(
+            "GMAIL_APP_PASSWORD"
+        )
+
+        # Gmail SMTP server
+        smtp_server = os.environ.get(
+            "GMAIL_SMTP_SERVER",
+            "smtp.gmail.com"
+        )
+
+        # Check Gmail email
+        if not sender_email:
+
+            print(
+                "Reminder email error: "
+                "GMAIL_EMAIL is not configured."
+            )
+
+            return False
+
+        # Check Gmail App Password
+        if not sender_password:
+
+            print(
+                "Reminder email error: "
+                "GMAIL_APP_PASSWORD is not configured."
+            )
+
+            return False
+
+        # Create email
+        message = MIMEMultipart()
+
+        message["From"] = sender_email
+
+        message["To"] = user.email
+
+        message["Subject"] = (
+            "Smart Sports Coach - Health Reminder"
+        )
+
+        message.attach(
+            MIMEText(
+                body,
+                "plain"
+            )
+        )
+
+        # Connect to Gmail SMTP
+        with smtplib.SMTP(
+            smtp_server,
+            587
+        ) as server:
+
+            server.starttls()
+
+            server.login(
+                sender_email,
+                sender_password
+            )
+
+            server.sendmail(
+                sender_email,
+                user.email,
+                message.as_string()
+            )
 
         print(
             "Personalized reminder sent to:",
@@ -845,7 +946,6 @@ Smart Sports Coach Team
         )
 
         return False
-    
 
 # =========================================================
 # HOME
@@ -1359,7 +1459,7 @@ def assessment():
 
             health_score=health_score,
 
-            created_at=datetime.utcnow()
+            created_at=datetime.now(timezone.utc)
         )
 
         db.session.add(
@@ -2812,7 +2912,6 @@ def delete_workout(workout_id):
 # =========================================================
 
 def send_scheduled_notifications():
-
     with app.app_context():
 
         current_time = datetime.now(
@@ -2820,8 +2919,6 @@ def send_scheduled_notifications():
         )
 
         current_time_string = current_time.strftime("%H:%M")
-
-        current_date = current_time.date()
 
         users = User.query.all()
 
@@ -2839,47 +2936,17 @@ def send_scheduled_notifications():
             if not settings.email_notification:
                 continue
 
+            if not settings.reminder_time:
+                continue
+
+            # Send when the selected reminder time is reached
             if settings.reminder_time != current_time_string:
                 continue
 
-            if settings.last_sent_date == current_date:
-                continue
-
-            sent = send_notification_email(
+            send_notification_email(
                 user,
                 settings
             )
-
-            if sent:
-
-                settings.last_sent_date = current_date
-
-                db.session.commit()
-
-
-def start_scheduler():
-
-    scheduler = BackgroundScheduler(
-        timezone="Asia/Kolkata"
-    )
-
-    scheduler.add_job(
-        func=send_scheduled_notifications,
-        trigger="interval",
-        minutes=1,
-        id="personalized_health_reminders",
-        replace_existing=True
-    )
-
-    scheduler.start()
-
-    print(
-        "Personalized reminder scheduler started."
-    )
-
-    print(
-        "Scheduler checks notification settings every minute."
-    )
 # =========================================================
 # ERROR HANDLERS
 # =========================================================
@@ -2905,17 +2972,38 @@ def internal_server_error(error):
 # RUN APPLICATION
 # =========================================================
 
+def start_scheduler():
+
+    scheduler = BackgroundScheduler(
+        timezone="Asia/Kolkata"
+    )
+
+    scheduler.add_job(
+        func=send_scheduled_notifications,
+        trigger="interval",
+        minutes=1,
+        id="personalized_health_reminders",
+        replace_existing=True
+    )
+
+    scheduler.start()
+
+    print(
+        "Personalized reminder scheduler started."
+    )
+
+    print(
+        "Scheduler checks notification settings every minute."
+    )
+
+
 if __name__ == "__main__":
 
-    if (
-        not app.debug
-        or os.environ.get("WERKZEUG_RUN_MAIN") == "true"
-    ):
-
-        start_scheduler()
+    start_scheduler()
 
     app.run(
         debug=True,
+        use_reloader=False,
         host="127.0.0.1",
         port=5000
     )
